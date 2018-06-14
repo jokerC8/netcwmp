@@ -41,7 +41,7 @@
 				<object name="{i}">
 					<param name="WANConnectionNumberOfEntries" get_func=""/>
 					<object name="WANConnectionDevice" refresh_func="cpe_refresh_igd_wanconnectiondevice">
-						<object name="{i}">
+							<object name="{i}">
 							<param name="WANIPConnectionNumberOfEntries" get_func=""/>
 							<param name="WANPPPConnectionNumberOfEntries" get_func=""/>
 							<object name="WANIPConnection" refresh_func="cpe_refresh_igd_wanipconnection">
@@ -65,8 +65,8 @@
 								<object name="{i}">
 									<param name="Enable" rw="1" type="s" get_func="" set_func=""/>
 									<param name="DefaultGateway" get_func=""/>
-									<param name="Username" noti_rw="1" rw="1" get_func="" set_func=""/>
-									<param name="Password" noti_rw="1" rw="1" get_func="" set_func=""/>
+									<param name="Username" noti_rw="1" rw="1" get_func="cpe_get_igd_WANPPPConnection_Username" set_func="cpe_set_igd_WANPPPConnection_Username"/>
+									<param name="Password" noti_rw="1" rw="1" get_func="cpe_get_igd_WANPPPConnection_Password" set_func="cpe_set_igd_WANPPPConnection_Password"/>
 									<param name="ExternalIPAddress" get_func=""/>
 									<param name="DNSServers" rw="1" get_func="" set_func=""/>
 									<param name="MACAddress" rw="1" type="s" get_func="" set_func=""/>

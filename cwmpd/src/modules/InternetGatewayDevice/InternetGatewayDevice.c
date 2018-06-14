@@ -3,6 +3,7 @@
 #include "WANDevice/WANDevice.c"
 #include "WANDevice/WANConnectionDevice/WANConnectionDevice.c"
 #include "WANDevice/WANConnectionDevice/WANIPConnection.c"
+#include "WANDevice/WANConnectionDevice/WANPPPConnection.c"
 
 
 

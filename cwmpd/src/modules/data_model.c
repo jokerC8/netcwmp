@@ -26,7 +26,11 @@ model_func_t ModelFunction[] =
 	{"cpe_refresh_igd_wandevice", cpe_refresh_igd_wandevice},
     {"cpe_refresh_igd_wanconnectiondevice", cpe_refresh_igd_wanconnectiondevice},
     {"cpe_refresh_igd_wanipconnection", cpe_refresh_igd_wanipconnection},
-
+	
+	{"cpe_get_igd_WANPPPConnection_Username", cpe_get_igd_WANPPPConnection_Username},
+	{"cpe_set_igd_WANPPPConnection_Username", cpe_set_igd_WANPPPConnection_Username},
+	{"cpe_get_igd_WANPPPConnection_Password", cpe_get_igd_WANPPPConnection_Password},
+	{"cpe_set_igd_WANPPPConnection_Password", cpe_set_igd_WANPPPConnection_Password},
 };
 
 int get_index_after_paramname(parameter_node_t * param, const char * tag_name)

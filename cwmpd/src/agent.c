@@ -934,7 +934,7 @@ int cwmp_agent_run_tasks(cwmp_t * cwmp)
 					cwmp_log_debug("reboot ...");
 					cwmp_event_set_value(cwmp, INFORM_MREBOOT, 1, NULL, 0, 0, 0);
 					cwmp_event_clear_active(cwmp);
-					//system("reboot");
+					system("reboot");
 				}
 				break;
 
@@ -944,7 +944,7 @@ int cwmp_agent_run_tasks(cwmp_t * cwmp)
 					cwmp_log_debug("factory reset ...");
 					
 					cwmp_event_clear_active(cwmp);
-					//system("factoryreset");
+					system("jffs2reset -y;reboot");
 				}
 				break;
 

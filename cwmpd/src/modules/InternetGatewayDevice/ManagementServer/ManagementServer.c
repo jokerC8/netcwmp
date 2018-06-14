@@ -100,15 +100,31 @@ int cpe_set_igd_ms_url(cwmp_t * cwmp, const char * name, const char * value, int
     return FAULT_CODE_OK;
 }
 
-
-
+//get wan3 interface name
+static int get_wan3_interface(char *ifname)
+{
+	FILE *fp = NULL;
+	char *cmd = "uci get network.wan3.ifname";
+	if (NULL == (fp == popen(cmd, "r"))) {
+		cwmp_log_debug("%s %d (%s)\n",__FUNCTION__,__LINE__,strerror(errno));
+		return -1;
+	}
+	if (NULL == (fgets(ifname, 32, fp))) {
+		cwmp_log_debug("%s %d (%s)\n",__FUNCTION__,__LINE__,strerror(errno));
+		pclose(fp);
+		return -1;
+	}
+	pclose(fp);
+	return 0;
+}
 
 //InternetGatewayDevice.ManagementServer.ConnectionRequestURL
 int cpe_get_igd_ms_connectionrequesturl(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
 {
     char buf[256]={0};
     char local_ip[32]={0};
-    cpe_get_localip("eth1", local_ip);
+
+    cpe_get_localip("eth0.4001", local_ip);
     int port = cwmp_conf_get_int("cwmpd:httpd_port");
     snprintf(buf, 256, "http://%s:%d", local_ip, port);
     *value = PSTRDUP(buf);
@@ -123,11 +139,11 @@ int cpe_get_igd_ms_connectionrequestusername(cwmp_t * cwmp, const char * name, c
 }
 int cpe_set_igd_ms_connectionrequestusername(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
-
-    return FAULT_CODE_OK;
+	int ret = cwmp_conf_set("cwmp:cpe_username", value);
+	if (ret == 1)
+ 	   return FAULT_CODE_OK;
+	return FAULT_CODE_9002;
 }
-
-
 
 //InternetGatewayDevice.ManagementServer.ConnectionRequestPassword
 int cpe_get_igd_ms_connectionrequestpassword(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
@@ -137,9 +153,8 @@ int cpe_get_igd_ms_connectionrequestpassword(cwmp_t * cwmp, const char * name, c
 }
 int cpe_set_igd_ms_connectionrequestpassword(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
-	cwmp_conf_set("cwmp:cpe_password", value);
-    return FAULT_CODE_OK;
+	int ret = cwmp_conf_set("cwmp:cpe_password", value);
+	if (ret == 1)
+    	return FAULT_CODE_OK;
+	return FAULT_CODE_9002;
 }
-
-
-
