@@ -20,20 +20,37 @@ int  cpe_refresh_igd_wanconnectiondevice(cwmp_t * cwmp, parameter_node_t * param
             tmp_param = tmp_node;
         }
         child_param->next_sibling = NULL;
-       
-        int wan_index = get_index_after_paramname(param_node, "WANDevice"); 
+
+        int wan_index = get_index_after_paramname(param_node, "WANDevice");
         parameter_node_t * wan1conn_param;
         cwmp_model_copy_parameter(param_node, &wan1conn_param, 1);
-        if(wan_index == 2)
-        {
-             parameter_node_t * wan2conn_param;
-             cwmp_model_copy_parameter(param_node, &wan2conn_param, 2);
-        }
-
-        cwmp_model_refresh_object(cwmp, param_node, 0, callback_reg); 
+        // if(wan_index == 2)
+        // {
+        //      parameter_node_t * wan2conn_param;
+        //      cwmp_model_copy_parameter(param_node, &wan2conn_param, 2);
+        // }
+        parameter_node_t * wan2conn_param;
+        cwmp_model_copy_parameter(param_node, &wan2conn_param, 2);
+        parameter_node_t * wan3conn_param;
+        cwmp_model_copy_parameter(param_node, &wan3conn_param, 3);
+        cwmp_model_refresh_object(cwmp, param_node, 0, callback_reg);
     }
 
     return FAULT_CODE_OK;
 }
 
+int cpe_get_igd_WANConnectionDevice_WANConnectionNumberOfEntries (cwmp_t * cwmp, const char * name,
+                                char ** value, pool_t * pool)
+{
+    FUNCTION_TRACE();
+    *value = PSTRDUP("3");
+    return FAULT_CODE_OK;
+}
 
+int cpe_get_igd_WANConnectionDevice_WANPPPConnectionNumberOfEntries (cwmp_t * cwmp, const char * name,
+                                char ** value, pool_t * pool)
+{
+    FUNCTION_TRACE();
+    *value = PSTRDUP("1");
+    return FAULT_CODE_OK;
+}

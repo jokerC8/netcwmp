@@ -1,7 +1,3 @@
-
-
-
-
 int  cpe_refresh_igd_wanipconnection(cwmp_t * cwmp, parameter_node_t * param_node, callback_register_func_t callback_reg)
 {
     FUNCTION_TRACE();
@@ -56,6 +52,58 @@ int  cpe_refresh_igd_wanipconnection(cwmp_t * cwmp, parameter_node_t * param_nod
     return FAULT_CODE_OK;
 }
 
+//InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.X_NGB_ServiceList
+int cpe_get_igd_WANIPConnection_X_NGB_ServiceList(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+    *value = PSTRDUP("TR069");
+	return FAULT_CODE_OK;
+}
 
+int cpe_set_igd_WANIPConnection_X_NGB_ServiceList(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	FUNCTION_TRACE();
+	return FAULT_CODE_OK;
+}
 
+//InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.MTU
+int cpe_get_igd_WANIPConnection_MTU(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+    *value = PSTRDUP("1460");
+	return FAULT_CODE_OK;
+}
 
+int cpe_set_igd_WANIPConnection_MTU(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	FUNCTION_TRACE();
+	return FAULT_CODE_OK;
+}
+
+//InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.AddressingType
+int cpe_get_igd_WANIPConnection_AddressingType(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+    *value = PSTRDUP("DHCP");
+	return FAULT_CODE_OK;
+}
+
+int cpe_set_igd_WANIPConnection_AddressingType(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	FUNCTION_TRACE();
+	return FAULT_CODE_OK;
+}
+
+//InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PossibleConnectionTypes
+int cpe_get_igd_WANIPConnection_PossibleConnectionTypes(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+    *value = PSTRDUP("Unconfigured, IP_Routed, IP_Bridged");
+	return FAULT_CODE_OK;
+}
+
+int cpe_set_igd_WANIPConnection_PossibleConnectionTypes(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	FUNCTION_TRACE();
+	return FAULT_CODE_OK;
+}

@@ -23,8 +23,8 @@ int  cpe_refresh_igd_wandevice(cwmp_t * cwmp, parameter_node_t * param_node, cal
         parameter_node_t * wan1_param;
         cwmp_model_copy_parameter(param_node, &wan1_param, 1);
         
-        parameter_node_t * wan2_param;
-        cwmp_model_copy_parameter(param_node, &wan2_param, 2);
+        // parameter_node_t * wan2_param;
+        // cwmp_model_copy_parameter(param_node, &wan2_param, 2);
        
         cwmp_model_refresh_object(cwmp, param_node, 0, callback_reg); 
     }

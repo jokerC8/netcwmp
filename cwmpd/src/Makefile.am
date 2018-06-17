@@ -1,6 +1,6 @@
 bin_PROGRAMS = cwmpd
 
-cwmpd_SOURCES = conf.c  cwmpd.c  httpd.c  process.c  thread.c agent.c modules/data_model.c 
+cwmpd_SOURCES = conf.c  cwmpd.c  httpd.c  process.c  thread.c agent.c modules/data_model.c libtcapi.c
 
 
 AM_CPPFLAGS = -DUSE_CWMP_MEMORY_POOL -I$(top_srcdir)/include  -I$(top_srcdir)/cwmpd/include -I$(top_srcdir)/libpool/include  -I$(top_srcdir)/libxmlet/include -I$(top_srcdir)/libcwmp/include 

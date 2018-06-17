@@ -5,6 +5,9 @@
 
 model_func_t ModelFunction[] =
 {
+    {"cpe_get_igd_device_summary", cpe_get_igd_device_summary},
+    {"cpe_get_igd_lan_device_number_of_entries", cpe_get_igd_lan_device_number_of_entries},
+    {"cpe_get_igd_wan_device_number_of_entries", cpe_get_igd_wan_device_number_of_entries},
     {"cpe_get_igd_di_manufacturer", cpe_get_igd_di_manufacturer},
     {"cpe_get_igd_di_manufactureroui", cpe_get_igd_di_manufactureroui},
     {"cpe_get_igd_di_productclass", cpe_get_igd_di_productclass},
@@ -26,11 +29,31 @@ model_func_t ModelFunction[] =
 	{"cpe_refresh_igd_wandevice", cpe_refresh_igd_wandevice},
     {"cpe_refresh_igd_wanconnectiondevice", cpe_refresh_igd_wanconnectiondevice},
     {"cpe_refresh_igd_wanipconnection", cpe_refresh_igd_wanipconnection},
-	
-	{"cpe_get_igd_WANPPPConnection_Username", cpe_get_igd_WANPPPConnection_Username},
-	{"cpe_set_igd_WANPPPConnection_Username", cpe_set_igd_WANPPPConnection_Username},
-	{"cpe_get_igd_WANPPPConnection_Password", cpe_get_igd_WANPPPConnection_Password},
-	{"cpe_set_igd_WANPPPConnection_Password", cpe_set_igd_WANPPPConnection_Password},
+    {"cpe_refresh_igd_wanpppconnection", cpe_refresh_igd_wanpppconnection},
+
+    {"cpe_get_igd_WANIPConnection_X_NGB_ServiceList", cpe_get_igd_WANIPConnection_X_NGB_ServiceList},
+    {"cpe_set_igd_WANIPConnection_X_NGB_ServiceList", cpe_set_igd_WANIPConnection_X_NGB_ServiceList},
+    {"cpe_get_igd_WANIPConnection_MTU", cpe_get_igd_WANIPConnection_MTU},
+    {"cpe_set_igd_WANIPConnection_MTU", cpe_set_igd_WANIPConnection_MTU},
+    {"cpe_get_igd_WANIPConnection_AddressingType", cpe_get_igd_WANIPConnection_AddressingType},
+    {"cpe_set_igd_WANIPConnection_AddressingType", cpe_set_igd_WANIPConnection_AddressingType},
+    {"cpe_get_igd_WANIPConnection_PossibleConnectionTypes", cpe_get_igd_WANIPConnection_PossibleConnectionTypes},
+    {"cpe_set_igd_WANIPConnection_PossibleConnectionTypes", cpe_set_igd_WANIPConnection_PossibleConnectionTypes},
+    {"cpe_get_X_NGB_WANEponLinkConfig_VLANIDMark", cpe_get_X_NGB_WANEponLinkConfig_VLANIDMark},
+    {"cpe_set_X_NGB_WANEponLinkConfig_VLANIDMark", cpe_set_X_NGB_WANEponLinkConfig_VLANIDMark},
+    {"cpe_get_X_NGB_WANEponLinkConfig_X_NGB_802_1p", cpe_get_X_NGB_WANEponLinkConfig_X_NGB_802_1p},
+    {"cpe_set_X_NGB_WANEponLinkConfig_X_NGB_802_1p", cpe_set_X_NGB_WANEponLinkConfig_X_NGB_802_1p},
+
+    {"cpe_get_igd_WANPPPConnection_Enable", cpe_get_igd_WANPPPConnection_Enable},
+    {"cpe_set_igd_WANPPPConnection_Enable", cpe_set_igd_WANPPPConnection_Enable},
+
+    {"cpe_get_igd_WANConnectionDevice_WANConnectionNumberOfEntries", cpe_get_igd_WANConnectionDevice_WANConnectionNumberOfEntries},
+    {"cpe_get_igd_WANConnectionDevice_WANPPPConnectionNumberOfEntries", cpe_get_igd_WANConnectionDevice_WANPPPConnectionNumberOfEntries},
+    
+  	{"cpe_get_igd_WANPPPConnection_Username", cpe_get_igd_WANPPPConnection_Username},
+  	{"cpe_set_igd_WANPPPConnection_Username", cpe_set_igd_WANPPPConnection_Username},
+  	{"cpe_get_igd_WANPPPConnection_Password", cpe_get_igd_WANPPPConnection_Password},
+  	{"cpe_set_igd_WANPPPConnection_Password", cpe_set_igd_WANPPPConnection_Password},
 };
 
 int get_index_after_paramname(parameter_node_t * param, const char * tag_name)
@@ -43,18 +66,16 @@ int get_index_after_paramname(parameter_node_t * param, const char * tag_name)
         {
              if(is_digit(tmp->name) == 0)
              {
-                return TRatoi(tmp->name);   
+                return TRatoi(tmp->name);
              }
-        }        
+        }
     }
     return -1;
 }
 
 
 void cwmp_model_load(cwmp_t * cwmp, const char * xmlfile)
-{  
+{
 
     cwmp_model_load_xml(cwmp, xmlfile, ModelFunction, sizeof(ModelFunction)/sizeof(model_func_t));
 }
-
-

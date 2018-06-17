@@ -4,22 +4,42 @@
 #include "WANDevice/WANConnectionDevice/WANConnectionDevice.c"
 #include "WANDevice/WANConnectionDevice/WANIPConnection.c"
 #include "WANDevice/WANConnectionDevice/WANPPPConnection.c"
+#include "WANDevice/WANConnectionDevice/WANIPConnection/X_NGB_WANEponLinkConfig.c"
 
 
+// char* cpe_get_igd_device_summary(void * arg, void * pool)
+// {
+//     //pool_t * p = (pool_t *)pool;
+//     return	NULL;
+// }
+//
+// char* cpe_get_igd_lan_device_number_of_entries(void * arg, void * pool)
+// {
+//     //pool_t * p = (pool_t *)pool;
+//     return NULL;
+// }
 
-char* cpe_get_igd_device_summary(void * arg, void * pool)
+//InternetGatewayDevice.DeviceSummary
+int cpe_get_igd_device_summary (cwmp_t * cwmp, const char * name,
+                                char ** value, pool_t * pool)
 {
-    //pool_t * p = (pool_t *)pool;
-    return	NULL;
+    FUNCTION_TRACE();
+    *value = PSTRDUP ("DVB+OTT+EOC BOX");
+    return FAULT_CODE_OK;
 }
 
-char* cpe_get_igd_lan_device_number_of_entries(void * arg, void * pool)
+int cpe_get_igd_lan_device_number_of_entries (cwmp_t * cwmp, const char * name,
+                                char ** value, pool_t * pool)
 {
-    //pool_t * p = (pool_t *)pool;
-    return NULL;
+    FUNCTION_TRACE();
+    *value = PSTRDUP("1");
+    return FAULT_CODE_OK;
 }
 
-
-
-
-
+int cpe_get_igd_wan_device_number_of_entries (cwmp_t * cwmp, const char * name,
+                                char ** value, pool_t * pool)
+{
+    FUNCTION_TRACE();
+    *value = PSTRDUP("1");
+    return FAULT_CODE_OK;
+}

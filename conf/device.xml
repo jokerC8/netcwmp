@@ -2,9 +2,9 @@
 <cwmp>
 	<model>
 		<object name="InternetGatewayDevice">
-			<param name="DeviceSummary" get_func="TRF_Get_DeviceSummary"/>
-			<param name="LANDeviceNumberOfEntries" get_func="TRF_Get_LANDeviceNumberOfEntries"/>
-			<param name="WANDeviceNumberOfEntries" get_func="TRF_Get_WANDeviceNumberOfEntries"/>
+			<param name="DeviceSummary" get_func="cpe_get_igd_device_summary"/>
+			<param name="LANDeviceNumberOfEntries" type="uint" get_func="cpe_get_igd_lan_device_number_of_entries"/>
+			<param name="WANDeviceNumberOfEntries" type="uint" get_func="cpe_get_igd_wan_device_number_of_entries"/>
 			<object name="DeviceInfo">
 				<param name="SpecVersion" get_func="cpe_get_igd_di_specversion"/>
 				<param name="HardwareVersion" get_func="cpe_get_igd_di_hardwareversion"/>
@@ -14,7 +14,7 @@
 				<param name="ManufacturerOUI" get_func="cpe_get_igd_di_manufactureroui"/>
 				<param name="ProductClass" get_func="cpe_get_igd_di_productclass"/>
 				<param name="SerialNumber" get_func="cpe_get_igd_di_serialnumber"/>
-			</object>
+			</object>		
 			<object name="ManagementServer">
 				<param name="ConnectionRequestURL" get_func="cpe_get_igd_ms_connectionrequesturl"/>
 				<param name="ConnectionRequestUsername" rw="1" noti_rw="1" get_func="cpe_get_igd_ms_connectionrequestusername" set_func="cpe_set_igd_ms_connectionrequestusername"/>
@@ -39,12 +39,12 @@
 			</object>
 			<object name="WANDevice" rw="1" refresh_func="cpe_refresh_igd_wandevice">
 				<object name="{i}">
-					<param name="WANConnectionNumberOfEntries" get_func=""/>
-					<object name="WANConnectionDevice" refresh_func="cpe_refresh_igd_wanconnectiondevice">
-							<object name="{i}">
-							<param name="WANIPConnectionNumberOfEntries" get_func=""/>
-							<param name="WANPPPConnectionNumberOfEntries" get_func=""/>
-							<object name="WANIPConnection" refresh_func="cpe_refresh_igd_wanipconnection">
+					<param name="WANConnectionNumberOfEntries" type="uint" get_func="cpe_get_igd_WANConnectionDevice_WANConnectionNumberOfEntries"/>
+					<object name="WANConnectionDevice" rw="1" refresh_func="cpe_refresh_igd_wanconnectiondevice">
+						<object name="{i}">
+							<param name="WANIPConnectionNumberOfEntries" rw="1" type="uint" get_func=""/>
+							<param name="WANPPPConnectionNumberOfEntries" rw="1" type="uint" get_func="cpe_get_igd_WANConnectionDevice_WANPPPConnectionNumberOfEntries"/>
+							<object name="WANIPConnection" rw="1" refresh_func="cpe_refresh_igd_wanipconnection">
 								<object name="{i}">
 									<param name="Enable" rw="1" type="s" get_func="" set_func=""/>
 									<param name="AddressingType" noti_rw="1" rw="1" get_func="" set_func=""/>
@@ -53,6 +53,16 @@
 									<param name="DefaultGateway" rw="1" get_func="" set_func=""/>
 									<param name="DNSServers" rw="1" get_func="" set_func=""/>
 									<param name="MACAddress" rw="1" get_func="" set_func=""/>
+
+									<param name="X_NGB_ServiceList" rw="1" type="s" get_func="cpe_get_igd_WANIPConnection_X_NGB_ServiceList" set_func="cpe_set_igd_WANIPConnection_X_NGB_ServiceList" />
+									<param name="MTU" rw="1" type="uint" get_func="cpe_get_igd_WANIPConnection_MTU" set_func="cpe_get_igd_WANIPConnection_MTU" />
+									<param name="AddressingType" rw="1" type="s" get_func="cpe_get_igd_WANIPConnection_AddressingType" set_func="cpe_set_igd_WANIPConnection_AddressingType" />
+									<param name="PossibleConnectionTypes" rw="1" type="s64" get_func="cpe_get_igd_WANIPConnection_PossibleConnectionTypes" set_func="cpe_set_igd_WANIPConnection_PossibleConnectionTypes" />
+									<object name="X_NGB_WANEponLinkConfig">
+										<param name="VLANIDMark" rw="1" type="uint" get_func="cpe_get_X_NGB_WANEponLinkConfig_VLANIDMark" set_func="cpe_set_X_NGB_WANEponLinkConfig_VLANIDMark"/>
+										<param name="X_NGB_802_1p" rw="1" type="uint" get_func="cpe_get_X_NGB_WANEponLinkConfig_X_NGB_802_1p" set_func="cpe_set_X_NGB_WANEponLinkConfig_X_NGB_802_1p"/>
+									</object>
+
 									<object name="Stats">
 										<param name="EthernetBytesSent" get_func=""/>
 										<param name="EthernetBytesReceived" get_func=""/>
@@ -61,9 +71,9 @@
 									</object>
 								</object>
 							</object>
-							<object name="WANPPPConnection" refresh_func="cpe_refresh_igd_wanpppconnection">
+							<object name="WANPPPConnection" rw="1" refresh_func="cpe_refresh_igd_wanpppconnection">
 								<object name="{i}">
-									<param name="Enable" rw="1" type="s" get_func="" set_func=""/>
+									<param name="Enable" rw="1" type="s" get_func="cpe_get_igd_WANPPPConnection_Enable" set_func="cpe_set_igd_WANPPPConnection_Enable"/>
 									<param name="DefaultGateway" get_func=""/>
 									<param name="Username" noti_rw="1" rw="1" get_func="cpe_get_igd_WANPPPConnection_Username" set_func="cpe_set_igd_WANPPPConnection_Username"/>
 									<param name="Password" noti_rw="1" rw="1" get_func="cpe_get_igd_WANPPPConnection_Password" set_func="cpe_set_igd_WANPPPConnection_Password"/>
@@ -125,7 +135,6 @@
 		</paramlist>
 	</inform>
 	<rpc>
-
-  
-  </rpc>
+	
+  	</rpc>
 </cwmp>
