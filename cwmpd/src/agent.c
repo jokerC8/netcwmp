@@ -23,6 +23,8 @@
  * Copyright 2013-2014  Mr.x(Mr.x) <netcwmp@gmail.com>          *
  *                                                                      *
  ***********************************************************************/
+#include <stdio.h>
+#include <string.h>
 
 #include "cwmp_module.h"
 #include "cwmp_agent.h"
@@ -122,7 +124,7 @@ int cwmp_agent_create_datetimes(datatime_t *nowtime)
 
 
 
-//È¡µÃactive eventÒÔ¼°count
+//È¡ï¿½ï¿½active eventï¿½Ô¼ï¿½count
 int cwmp_agent_get_active_event(cwmp_t *cwmp, cwmp_session_t * session,  event_list_t **pevent_list)
 {
     event_list_t * el;
@@ -751,13 +753,13 @@ int cwmp_agent_upload_file(upload_arg_t * ularg)
 	int rc;
 	if(strcmp(ularg->filetype, "1 Vendor Configuration File") == 0)
 	{
-		//¸ù¾ÝÊµ¼ÊÇé¿ö, ÐÞ¸ÄÕâÀïµÄÅäÖÃÎÄ¼þÂ·¾¶
+		//ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â·ï¿½ï¿½
 		
 		uf = fopen("/tmp/mysystem.cfg", "rb");		
 	}
 	else if(strcmp(ularg->filetype, "2 Vendor Log File") == 0)
 	{
-		//¸ù¾ÝÊµ¼ÊÇé¿ö, ÐÞ¸ÄÕâÀïµÄÅäÖÃÎÄ¼þÂ·¾¶
+		//ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â·ï¿½ï¿½
 		uf = fopen("/tmp/mysystem.log", "rb");	
 	}
 	else
@@ -811,11 +813,11 @@ int cwmp_agent_upload_file(upload_arg_t * ularg)
 
 
 
-int cwmp_agent_download_file(download_arg_t * dlarg)
+int cwmp_agent_download_file(download_arg_t * dlarg, char *tofile)
 {
     int faultcode = 0;
     char * fromurl = dlarg->url;
-    char * tofile = "/tmp/download.img";
+    // char * tofile = "/tmp/download.img";
 
     FUNCTION_TRACE();
 
@@ -830,14 +832,33 @@ int cwmp_agent_download_file(download_arg_t * dlarg)
     {
 	     faultcode = 9001;
     }
-   
-
 
     return faultcode;
 
 }
 
+static int readlog(char *filename)
+{
+    FILE *fp, *wfp = NULL;
+    char buf[256] = { 0 };
+    char *cmdline = "/sbin/logread";
 
+    if (NULL == (fp = popen(cmdline, "r"))) {
+        cwmp_log_error("readlog failed (%s)\n", strerror(errno));
+        return -1;
+    }
+    if (NULL == (wfp = fopen(filename, "w"))) {
+        cwmp_log_error("open %s failed (%s)\n", filename, strerror(errno));
+        pclose(fp);
+        return -1;
+    }
+    while (fgets(buf, sizeof(buf), fp)) {
+        fputs(buf, wfp);
+    }
+    fsync(fileno(wfp));
+    fclose(wfp);
+    pclose(fp);
+}
 
 int cwmp_agent_upload_file(upload_arg_t * ularg)
 {
@@ -845,31 +866,22 @@ int cwmp_agent_upload_file(upload_arg_t * ularg)
     FUNCTION_TRACE();
     char * fromfile;
 
-	if(strcpy(ularg->filetype, "1 Vendor Configuration File") == 0)
-	{
-		//¸ù¾ÝÊµ¼ÊÇé¿ö, ÐÞ¸ÄÕâÀïµÄÅäÖÃÎÄ¼þÂ·¾¶
-		
-		fromfile = "/tmp/mysystem.cfg";
-	}
-	else if(strcpy(ularg->filetype, "2 Vendor Log File") == 0)
-	{
-		//¸ù¾ÝÊµ¼ÊÇé¿ö, ÐÞ¸ÄÕâÀïµÄÅäÖÃÎÄ¼þÂ·¾¶
-		fromfile = "/tmp/mysystem.log";
-	}
-	else
-	{
+	if (!strncmp(ularg->filetype, "1 Vendor Configuration File", strlen("1 Vendor Configuration File"))) {
+		// fromfile = "/tmp/mysystem.cfg";
+        fromfile = "/etc/config/switch.sh";
+	} else if(!strncmp(ularg->filetype, "2 Vendor Log File", strlen("2 Vendor Log File"))) {
+		// fromfile = "/tmp/mysystem.log";
+        fromfile = "/tmp/syslog.log";
+        readlog(fromfile);
+	} else {
 		fromfile = "/tmp/mysystem.cfg";
 	}
 	
     faultcode = http_send_file(fromfile, ularg->url);
-
     if(faultcode != CWMP_OK)
     {
-	faultcode = 9001;
+	    faultcode = 9001;
     }
-   
-
-
     return faultcode;
 }
 
@@ -900,13 +912,29 @@ int cwmp_agent_run_tasks(cwmp_t * cwmp)
 					//begin download file
 					time_t starttime = time(NULL);
 					int faultcode = 0;
+                    char *tofile = NULL;
 
-					faultcode = cwmp_agent_download_file(dlarg);
-					
-					time_t endtime = time(NULL);
-					cwmp_event_set_value(cwmp, INFORM_TRANSFERCOMPLETE, 1,dlarg->cmdkey, faultcode, starttime, endtime);
-					
-					
+                    if (!strncmp(dlarg->filetype, "1 Firmware Upgrade Image", strlen("1 Firmware Upgrade Image"))) {
+                        tofile = "/tmp/upgrade.bin";
+                        faultcode = cwmp_agent_download_file(dlarg, tofile);
+                        time_t endtime = time(NULL);
+                        cwmp_event_set_value(cwmp, INFORM_TRANSFERCOMPLETE, 1,dlarg->cmdkey, faultcode, starttime, endtime);
+
+                        if (faultcode == FAULT_CODE_OK) {
+                            system("sysupgrade -c /tmp/upgrade.bin");
+                        }
+                    } else if (!strncmp(dlarg->filetype, "2 Web Content", strlen("2 Web Content"))) {
+                        cwmp_log_error("do not support download wen content yet\n");
+                    } else if (!strncmp(dlarg->filetype, "3 Vendor Configuration File",strlen("3 Vendor Configuration File"))) {
+                        tofile = "/tmp/switch.conf";
+                        faultcode = cwmp_agent_download_file(dlarg, tofile);
+					    time_t endtime = time(NULL);
+					    cwmp_event_set_value(cwmp, INFORM_TRANSFERCOMPLETE, 1,dlarg->cmdkey, faultcode, starttime, endtime);
+
+                        if (faultcode == FAULT_CODE_OK) {
+                            cwmp_log_info("deal with the config file\n");
+                        }
+                    }
 					FREE(dlarg);
 				}
 				break;
@@ -922,7 +950,6 @@ int cwmp_agent_run_tasks(cwmp_t * cwmp)
 					
 					time_t endtime = time(NULL);
 					cwmp_event_set_value(cwmp, INFORM_TRANSFERCOMPLETE, 1,ularg->cmdkey, faultcode, starttime, endtime);
-					
 					
 					FREE(ularg);
 				}

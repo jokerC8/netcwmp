@@ -13,7 +13,9 @@
 #include "cwmp/log.h"
 #include "cwmp_private.h"
 #include <cwmp/md5.h>
-
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <sys/socket.h>
 
 
 
@@ -93,22 +95,45 @@ int http_dest_create(http_dest_t ** dest, const char * url, pool_t * pool)
 
 void http_sockaddr_set(http_sockaddr_t * addr, int family, int port, const char * host)
 {
+    struct hostent *parse_host = NULL;
     addr->sin4.sin_family = family;
-
-    if (family == AF_INET)
-    {
-
-    }
+#ifdef CWMP_IPV6
+    addr->sin6.sin6_family = family;
+#endif
 
     if (port)
     {
         addr->sin4.sin_port = htons((unsigned short)port);
+#ifdef CWMP_IPV6
+        addr->sin6.sin6_port = htons((unsigned short)port);
+#endif
     }
 
     if (host)
     {
+#ifdef CWMP_IPV6
+        if (family == AF_INET6)
+            inet_pton (AF_INET6, host, addr->sin6.sin6_addr.s6_addr);
+        else
+#endif
 		//inet_aton(host, &addr->sin4.sin_addr);
-        addr->sin4.sin_addr.s_addr = inet_addr(host);
+        {
+            if((inet_addr(host)) == INADDR_NONE)
+            {
+                if ((parse_host = gethostbyname (host)) == NULL)
+                    cwmp_log_error ("gethostbyname (%s) error", host);
+                else
+                {
+                    memcpy ((char *)&addr->sin4.sin_addr, parse_host->h_addr, parse_host->h_length);
+                    cwmp_log_debug ("gethostbyname (%s) = %s", host,
+                            inet_ntoa(*(struct in_addr *)&addr->sin4.sin_addr.s_addr));
+                }
+            }
+            else
+            {
+                addr->sin4.sin_addr.s_addr = inet_addr(host);
+            }
+        }
     }
     else
     {

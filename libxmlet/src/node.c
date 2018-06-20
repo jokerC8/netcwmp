@@ -409,11 +409,14 @@ XmlNodeSetNodeValue(
 
     if ( newNodeValue != NULL )
     {
+#if 0
         nodeptr->nodeValue = XmlStrduptrim(
 #ifdef USE_CWMP_MEMORY_POOL
                                  pool ,
 #endif
                                  newNodeValue );
+#endif
+        nodeptr->nodeValue = PSTRDUP (newNodeValue);
         if ( nodeptr->nodeValue == NULL )
         {
             return XML_INSUFFICIENT_MEMORY;

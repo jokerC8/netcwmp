@@ -54,6 +54,11 @@ model_func_t ModelFunction[] =
   	{"cpe_set_igd_WANPPPConnection_Username", cpe_set_igd_WANPPPConnection_Username},
   	{"cpe_get_igd_WANPPPConnection_Password", cpe_get_igd_WANPPPConnection_Password},
   	{"cpe_set_igd_WANPPPConnection_Password", cpe_set_igd_WANPPPConnection_Password},
+
+    {"cpe_refresh_igd_landevice", cpe_refresh_igd_landevice},
+    {"cpe_refresh_igd_lanethernetinterfaceconfig", cpe_refresh_igd_lanethernetinterfaceconfig},
+    {"cpe_refresh_igd_ipinterface", cpe_refresh_igd_ipinterface},
+    {"cpe_refresh_igd_wlanconfiguration", cpe_refresh_igd_wlanconfiguration},
 };
 
 int get_index_after_paramname(parameter_node_t * param, const char * tag_name)

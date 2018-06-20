@@ -47,7 +47,7 @@
 							<object name="WANIPConnection" rw="1" refresh_func="cpe_refresh_igd_wanipconnection">
 								<object name="{i}">
 									<param name="Enable" rw="1" type="s" get_func="" set_func=""/>
-									<param name="AddressingType" noti_rw="1" rw="1" get_func="" set_func=""/>
+									<param name="AddressingType" noti_rw="1" rw="1" type="s" get_func="cpe_get_igd_WANIPConnection_AddressingType" set_func="cpe_set_igd_WANIPConnection_AddressingType" />
 									<param name="ExternalIPAddress" noti_rw="1" rw="1" get_func="" set_func=""/>
 									<param name="SubnetMask" noti_rw="1" rw="1" get_func="" set_func=""/>
 									<param name="DefaultGateway" rw="1" get_func="" set_func=""/>
@@ -56,7 +56,6 @@
 
 									<param name="X_NGB_ServiceList" rw="1" type="s" get_func="cpe_get_igd_WANIPConnection_X_NGB_ServiceList" set_func="cpe_set_igd_WANIPConnection_X_NGB_ServiceList" />
 									<param name="MTU" rw="1" type="uint" get_func="cpe_get_igd_WANIPConnection_MTU" set_func="cpe_get_igd_WANIPConnection_MTU" />
-									<param name="AddressingType" rw="1" type="s" get_func="cpe_get_igd_WANIPConnection_AddressingType" set_func="cpe_set_igd_WANIPConnection_AddressingType" />
 									<param name="PossibleConnectionTypes" rw="1" type="s64" get_func="cpe_get_igd_WANIPConnection_PossibleConnectionTypes" set_func="cpe_set_igd_WANIPConnection_PossibleConnectionTypes" />
 									<object name="X_NGB_WANEponLinkConfig">
 										<param name="VLANIDMark" rw="1" type="uint" get_func="cpe_get_X_NGB_WANEponLinkConfig_VLANIDMark" set_func="cpe_set_X_NGB_WANEponLinkConfig_VLANIDMark"/>
@@ -89,6 +88,41 @@
 									</object>
 								</object>
 							</object>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object name="LANDevice" rw="1" refresh_func="cpe_refresh_igd_landevice">
+				<object name="{i}">
+					<param name="LANEthernetInterfaceNumberOfEntries" rw="1" type="uint" get_func="cpe_get_igd_LANDevice_LANEthernetInterfaceNumberOfEntries" set_func="cpe_set_igd_LANDevice_LANEthernetInterfaceNumberOfEntries" />
+					<param name="LANUSBInterfaceNumberOfEntries" rw="1" type="uint" get_func="cpe_get_igd_LANDevice_LANUSBInterfaceNumberOfEntries" set_func="cpe_set_igd_LANDevice_LANUSBInterfaceNumberOfEntries" />
+					<param name="LANWLANConfigurationNumberOfEntries" rw="1" type="uint" get_func="cpe_get_igd_LANDevice_LANWLANConfigurationNumberOfEntries" set_func="cpe_set_igd_LANDevice_LANWLANConfigurationNumberOfEntries" />
+					<object name="LANEthernetInterfaceConfig" refresh_func="cpe_refresh_igd_lanethernetinterfaceconfig">
+						<object name="{i}">
+							<param name="Status" type="s" get_func="cpe_get_igd_LANEthernetInterfaceConfig_Status" set_func=""/>
+							<param name="Enable" rw="1" type="bool" get_func="cpe_get_igd_LANEthernetInterfaceConfig_Enable" set_func="cpe_set_igd_LANEthernetInterfaceConfig_Enable"/>
+							<param name="MACAddress" type="s" get_func="cpe_get_igd_LANEthernetInterfaceConfig_MACAddress" set_func=""/>
+							<param name="MACAddressControlEnabled" rw="1" type="bool" get_func="cpe_get_igd_LANEthernetInterfaceConfig_MACAddressControlEnabled" set_func="cpe_set_igd_LANEthernetInterfaceConfig_MACAddressControlEnabled"/>
+							<param name="MaxBitRate" rw="1" type="s" get_func="cpe_get_igd_LANEthernetInterfaceConfig_MaxBitRate" set_func="cpe_set_igd_LANEthernetInterfaceConfig_MaxBitRate"/>
+							<param name="DuplexMode" rw="1" type="s" get_func="cpe_get_igd_LANEthernetInterfaceConfig_DuplexMode" set_func="cpe_set_igd_LANEthernetInterfaceConfig_DuplexMode"/>
+							<param name="Name" type="s" get_func="cpe_get_igd_LANEthernetInterfaceConfig_Name" set_func=""/>
+						</object>
+					</object>
+					<object name="LANHostConfigManagement">
+						<param name="MaxAddress" rw="1" type="s" set_func="" get_func="" />
+						<param name="MinAddress" rw="1" type="s" set_func="" get_func="" />
+						<param name="DHCPServerEnable" rw="1" type="bool" set_func="" get_func="" />
+						<param name="DNSServers" rw="1" type="s64" set_func="" get_func="" />
+						<param name="DHCPLeaseTime" rw="1" type="int" set_func="" get_func="" />
+						<object name="IPInterface" refresh_func="cpe_refresh_igd_ipinterface">
+							<object name="{i}">
+								<param name="IPInterfaceIPAddress" rw="1" type="s" set_func="" get_func="" />
+								<param name="IPInterfaceSubnetMask" rw="1" type="s" set_func="" get_func="" />
+							</object>
+						</object>
+					</object>
+					<object name="WLANConfiguration" refresh_func="cpe_refresh_igd_wlanconfiguration">
+						<object name="{i}">
 						</object>
 					</object>
 				</object>
