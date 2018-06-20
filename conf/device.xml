@@ -8,7 +8,7 @@
 			<object name="DeviceInfo">
 				<param name="SpecVersion" get_func="cpe_get_igd_di_specversion"/>
 				<param name="HardwareVersion" get_func="cpe_get_igd_di_hardwareversion"/>
-				<param name="SoftwareVersion" rw="1" get_func="cpe_get_igd_di_softwareversion" set_func="cpe_set_igd_di_softwareversion"/>
+				<param name="SoftwareVersion" get_func="cpe_get_igd_di_softwareversion"/>
 				<param name="ProvisioningCode" rw="1" get_func="cpe_get_igd_di_provisioningcode" set_func="cpe_set_igd_di_provisioningcode"/>
 				<param name="Manufacturer" get_func="cpe_get_igd_di_manufacturer"/>
 				<param name="ManufacturerOUI" get_func="cpe_get_igd_di_manufactureroui"/>
@@ -21,7 +21,7 @@
 				<param name="ConnectionRequestPassword" rw="1" noti_rw="1" get_func="cpe_get_igd_ms_connectionrequestpassword" set_func="cpe_set_igd_ms_connectionrequestpassword"/>
 				<param name="Username" rw="1" noti_rw="1" get_func="cpe_get_igd_ms_username" set_func="cpe_set_igd_ms_username"/>
 				<param name="Password" rw="1" noti_rw="1" get_func="cpe_get_igd_ms_password" set_func="cpe_set_igd_ms_password"/>
-				<param name="URL" noti_rw="1" rw="1" get_func="cpe_get_igd_ms_url" set_func="cpe_get_igd_ms_url"/>
+				<param name="URL" noti_rw="1" rw="1" get_func="cpe_get_igd_ms_url" set_func="cpe_set_igd_ms_url"/>
 				<param name="PeriodicInformEnable" rw="1" noti_rw="1" type="s" get_func="" set_func=""/>
 				<param name="PeriodicInformInterval" rw="1" noti_rw="1" get_func="" set_func=""/>
 				<param name="PeriodicInformTime" rw="1" type="s" get_func="" set_func=""/>

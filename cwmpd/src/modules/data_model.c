@@ -17,8 +17,12 @@ model_func_t ModelFunction[] =
     {"cpe_get_igd_di_softwareversion", cpe_get_igd_di_softwareversion},
     {"cpe_get_igd_di_provisioningcode", cpe_get_igd_di_provisioningcode},
 
+    {"cpe_get_igd_ms_url", cpe_get_igd_ms_url},
+    {"cpe_set_igd_ms_url", cpe_set_igd_ms_url},
     {"cpe_get_igd_ms_username", cpe_get_igd_ms_username},
+    {"cpe_set_igd_ms_username", cpe_set_igd_ms_username},
     {"cpe_get_igd_ms_password", cpe_get_igd_ms_password},
+    {"cpe_set_igd_ms_password", cpe_set_igd_ms_password},
     {"cpe_get_igd_ms_connectionrequesturl", cpe_get_igd_ms_connectionrequesturl},
     {"cpe_get_igd_ms_connectionrequestusername", cpe_get_igd_ms_connectionrequestusername},
     {"cpe_get_igd_ms_connectionrequestpassword", cpe_get_igd_ms_connectionrequestpassword},
