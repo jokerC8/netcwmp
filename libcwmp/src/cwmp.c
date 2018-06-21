@@ -1796,7 +1796,8 @@ xmlnode_t * cwmp_create_event_node(env_t * env ,  xmlnode_t * parent, const even
 	if (pe[count]->event == INFORM_MREBOOT ) //|| pe[count]->event == INFORM_BOOTSTRAP)
 	{
         	ESA(eventCommandKeyNode, cwmp_xml_create_child_node(env ,  eventStructNode, NULL, "CommandKey", pe[count]->command_key));
-	}
+
+	}
 	else
 	{
 		ESA(eventCommandKeyNode, cwmp_xml_create_child_node(env ,  eventStructNode, NULL, "CommandKey", NULL));
@@ -2084,6 +2085,7 @@ void * cwmp_create_getparameternames_response_all_parameter_names(env_t * env , 
     }
     for (param_child = param_node->child; param_child; param_child = param_child->next_sibling)
     {
+        cwmp_log_info("name:%s\n", param_child->name);
         if(TRstrcmp(param_child->name, "{i}") == 0)
             continue;
         cwmp_buffer_init(&buffer);
@@ -2154,35 +2156,36 @@ xmldoc_t* cwmp_create_getparameternames_response_message(env_t * env ,
     }
     else
     {
-        if (next_level == CWMP_YES)
-        {
-            for (child = param_node->child; child; child = child->next_sibling)
-            {
-		if(TRstrcmp(child->name, "{i}") == 0)
-	            continue;
+        cwmp_create_getparameternames_response_all_parameter_names(env, parameterListNode, path_name, param_node, &count);
+        // if (next_level == CWMP_YES)
+        // {
+        //     for (child = param_node->child; child; child = child->next_sibling)
+        //     {
+		// if(TRstrcmp(child->name, "{i}") == 0)
+	    //         continue;
 
-                cwmp_buffer_init(&buffer);
-                if (child->type == TYPE_OBJECT)
-                {
-                    cwmp_buffer_write_format_string(&buffer,"%s%s.", path_name, child->name);
-                }
-                else
-                {
-                    cwmp_buffer_write_format_string(&buffer,"%s%s", path_name, child->name);
-                }
-                ESA(parameterInfoStructNode, cwmp_xml_create_child_node(env ,  parameterListNode, NULL, "ParameterInfoStruct", NULL));
-                ESA(parameterNameNode, cwmp_xml_create_child_node(env ,  parameterInfoStructNode, NULL, "Name", cwmp_buffer_string(&buffer)));
-                ESA(parameterWritableNode, cwmp_xml_create_child_node(env ,  parameterInfoStructNode, NULL, "Writable", child->rw==0? "0" : "1"));
-                count++;
+        //         cwmp_buffer_init(&buffer);
+        //         if (child->type == TYPE_OBJECT)
+        //         {
+        //             cwmp_buffer_write_format_string(&buffer,"%s%s.", path_name, child->name);
+        //         }
+        //         else
+        //         {
+        //             cwmp_buffer_write_format_string(&buffer,"%s%s", path_name, child->name);
+        //         }
+        //         ESA(parameterInfoStructNode, cwmp_xml_create_child_node(env ,  parameterListNode, NULL, "ParameterInfoStruct", NULL));
+        //         ESA(parameterNameNode, cwmp_xml_create_child_node(env ,  parameterInfoStructNode, NULL, "Name", cwmp_buffer_string(&buffer)));
+        //         ESA(parameterWritableNode, cwmp_xml_create_child_node(env ,  parameterInfoStructNode, NULL, "Writable", child->rw==0? "0" : "1"));
+        //         count++;
 
-            }
-        }
-        else
-        {
-            //all parameters
-            cwmp_create_getparameternames_response_all_parameter_names(env, parameterListNode, path_name, param_node, &count);
+        //     }
+        // }
+        // else
+        // {
+        //     //all parameters
+        //     cwmp_create_getparameternames_response_all_parameter_names(env, parameterListNode, path_name, param_node, &count);
 
-        }
+        // }
     }
 
     ESN(XML_OK, cwmp_xml_set_node_attribute(env ,  parameterListNode, SOAP_ENC_ARRAYTYPE, cwmp_get_format_string("cwmp:ParameterInfoStruct[%d]", count) ));

@@ -63,6 +63,20 @@ model_func_t ModelFunction[] =
     {"cpe_refresh_igd_lanethernetinterfaceconfig", cpe_refresh_igd_lanethernetinterfaceconfig},
     {"cpe_refresh_igd_ipinterface", cpe_refresh_igd_ipinterface},
     {"cpe_refresh_igd_wlanconfiguration", cpe_refresh_igd_wlanconfiguration},
+    {"cpe_refresh_igd_presharedKey", cpe_refresh_igd_presharedKey},
+
+    {"cpe_get_igd_WLANConfiguration_Enable", cpe_get_igd_WLANConfiguration_Enable},
+    {"cpe_set_igd_WLANConfiguration_Enable", cpe_set_igd_WLANConfiguration_Enable},
+    {"cpe_get_igd_WLANConfiguration_BeaconType", cpe_get_igd_WLANConfiguration_BeaconType},
+    {"cpe_set_igd_WLANConfiguration_BeaconType", cpe_set_igd_WLANConfiguration_BeaconType},
+    {"cpe_get_igd_WLANConfiguration_BasicEncryptionModes", cpe_get_igd_WLANConfiguration_BasicEncryptionModes},
+    {"cpe_set_igd_WLANConfiguration_BasicEncryptionModes", cpe_set_igd_WLANConfiguration_BasicEncryptionModes},
+    {"cpe_get_igd_WLANConfiguration_BasicAuthenticationMode", cpe_get_igd_WLANConfiguration_BasicAuthenticationMode},
+    {"cpe_set_igd_WLANConfiguration_BasicAuthenticationMode", cpe_set_igd_WLANConfiguration_BasicAuthenticationMode},
+    {"cpe_get_igd_WLANConfiguration_SSID", cpe_get_igd_WLANConfiguration_SSID},
+    {"cpe_set_igd_WLANConfiguration_SSID", cpe_set_igd_WLANConfiguration_SSID},
+    {"cpe_get_igd_PreSharedKey_PreSharedKey", cpe_get_igd_PreSharedKey_PreSharedKey},
+    {"cpe_set_igd_PreSharedKey_PreSharedKey", cpe_set_igd_PreSharedKey_PreSharedKey},
 };
 
 int get_index_after_paramname(parameter_node_t * param, const char * tag_name)

@@ -121,8 +121,18 @@
 							</object>
 						</object>
 					</object>
-					<object name="WLANConfiguration" refresh_func="cpe_refresh_igd_wlanconfiguration">
+					<object name="WLANConfiguration" rw="1" refresh_func="cpe_refresh_igd_wlanconfiguration">
 						<object name="{i}">
+							<param name="BeaconType" rw="1" get_func="cpe_get_igd_WLANConfiguration_BeaconType" set_func="cpe_set_igd_WLANConfiguration_BeaconType"/>
+							<param name="Enable" rw="1" type="bool" get_func="cpe_get_igd_WLANConfiguration_Enable" set_func="cpe_set_igd_WLANConfiguration_Enable"/>
+							<param name="BasicEncryptionModes" rw="1" get_func="cpe_get_igd_WLANConfiguration_BasicEncryptionModes" set_func="cpe_set_igd_WLANConfiguration_BasicEncryptionModes"/>
+							<param name="BasicAuthenticationMode" rw="1" get_func="cpe_get_igd_WLANConfiguration_BasicAuthenticationMode" set_func="cpe_set_igd_WLANConfiguration_BasicAuthenticationMode"/>
+							<param name="SSID" rw="1" get_func="cpe_get_igd_WLANConfiguration_SSID" set_func="cpe_set_igd_WLANConfiguration_SSID"/>
+							<object name="PreSharedKey" refresh_func="cpe_refresh_igd_presharedKey">
+								<object name="{i}">
+									<param name="PreSharedKey" rw="1" type="s64" get_func="cpe_get_igd_PreSharedKey_PreSharedKey" set_func="cpe_set_igd_PreSharedKey_PreSharedKey"/>
+								</object>
+							</object>
 						</object>
 					</object>
 				</object>

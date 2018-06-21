@@ -3,6 +3,7 @@
 #include "WANDevice/WANDevice.c"
 #include "LANDevice/LANDevice.c"
 #include "LANDevice/WLANConfiguration/WLANConfiguration.c"
+#include "LANDevice/WLANConfiguration/PreSharedKey/PreSharedKey.c"
 #include "LANDevice/LANEthernetInterfaceConfig/LANEthernetInterfaceConfig.c"
 #include "LANDevice/LANHostConfigManagement/IPInterface/IPInterface.c"
 #include "WANDevice/WANConnectionDevice/WANConnectionDevice.c"

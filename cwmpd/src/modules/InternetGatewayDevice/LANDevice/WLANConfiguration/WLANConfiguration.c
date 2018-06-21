@@ -29,3 +29,54 @@ int  cpe_refresh_igd_wlanconfiguration(cwmp_t * cwmp, parameter_node_t * param_n
     
     return FAULT_CODE_OK;
 }
+
+//InternetGatewayDevice.LANDevice.WLANConfiguration.Enable
+int cpe_get_igd_WLANConfiguration_Enable(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{    
+    return FAULT_CODE_OK;
+}
+int cpe_set_igd_WLANConfiguration_Enable(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	return FAULT_CODE_OK;
+}
+
+
+//InternetGatewayDevice.LANDevice.WLANConfiguration.BeaconType
+int cpe_get_igd_WLANConfiguration_BeaconType(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{    
+    return FAULT_CODE_OK;
+}
+int cpe_set_igd_WLANConfiguration_BeaconType(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	return FAULT_CODE_OK;
+}
+
+//InternetGatewayDevice.LANDevice.WLANConfiguration.BasicEncryptionModes
+int cpe_get_igd_WLANConfiguration_BasicEncryptionModes(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{    
+    return FAULT_CODE_OK;
+}
+int cpe_set_igd_WLANConfiguration_BasicEncryptionModes(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	return FAULT_CODE_OK;
+}
+
+//InternetGatewayDevice.LANDevice.WLANConfiguration.BasicAuthenticationMode
+int cpe_get_igd_WLANConfiguration_BasicAuthenticationMode(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{    
+    return FAULT_CODE_OK;
+}
+int cpe_set_igd_WLANConfiguration_BasicAuthenticationMode(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	return FAULT_CODE_OK;
+}
+
+//InternetGatewayDevice.LANDevice.WLANConfiguration.SSID
+int cpe_get_igd_WLANConfiguration_SSID(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{   
+    return FAULT_CODE_OK;
+}
+int cpe_set_igd_WLANConfiguration_SSID(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	return FAULT_CODE_OK;
+}
