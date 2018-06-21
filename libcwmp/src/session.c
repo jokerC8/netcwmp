@@ -688,6 +688,10 @@ parameter_list_t * cwmp_session_create_inform_parameters(cwmp_session_t * sessio
     parameter = cwmp_create_parameter(session->env,  name, value, 0, TYPE_STRING);
     cwmp_add_parameter_to_list(session->env,  pl, parameter);
 
+    name    = CWMP_APPEND_PARAMETER_NAME(pool, 3, InternetGatewayDeviceModule, ManagementServerModule, macModule);
+    value   = cwmp_data_get_parameter_value(session->cwmp, session->root, name, pool);
+    parameter = cwmp_create_parameter(session->env,  name, value, 0, TYPE_STRING);
+    cwmp_add_parameter_to_list(session->env,  pl, parameter);
 
     name    = cwmp_conf_pool_get(pool, "cwmp:wan_interface");
     if (name == NULL || TRstrcmp(name, "") == 0 )

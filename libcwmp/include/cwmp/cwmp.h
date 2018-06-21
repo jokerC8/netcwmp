@@ -187,6 +187,7 @@
 
 #define ManagementServerModule              "ManagementServer"
 #define URLModule                           "URL"
+#define macModule							"mac"
 #define UsernameModule                      "Username"
 #define PasswordModule                      "Password"
 #define PeriodicInformIntervalModule        "PeriodicInformInterval"
@@ -340,7 +341,7 @@ struct cwmp_st
 
 	event_global_t    event_global;
 
-	transfer_t    transfer_info;      //ÓÃÓÚDownloadºÍUpload
+	transfer_t    transfer_info;      //ï¿½ï¿½ï¿½ï¿½Downloadï¿½ï¿½Upload
 
 	queue_t  *	queue;
 
