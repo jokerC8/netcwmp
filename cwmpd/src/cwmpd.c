@@ -33,7 +33,7 @@
 int              cwmp_argc;
 char           **cwmp_argv;
 
-
+static cwmp_t *cwmp_global;
 static pool_t * cwmp_global_pool;
 
 
@@ -92,7 +92,64 @@ void cwmp_init_ssl(cwmp_t * cwmp)
 #endif
 
 
+void send_information (int num)
+{
+    int tmp = num;
+    cwmp_global->new_request = CWMP_YES;
+    cwmp_event_set_value(cwmp_global, INFORM_PERIODIC, 1, NULL, 0, 0, 0);
+}
 
+void cwmp_periodicinforminterval(cwmp_t *cwmp)
+{
+    struct itimerval periodicinforminterval_tick;
+    char PeriodicInformInterval[128] = { 0 };
+    char PeriodicInformEnable[128] = { 0 };
+    int interval_number = 0;
+    int enable = 0;
+    int ret = 0;
+
+    if (NULL == cwmp)
+    {
+        return;
+    }
+
+    cwmp_conf_get("cwmp:periodicinformenable", PeriodicInformEnable);
+    // tcapi_get("cwmp", "cwmp:periodicinformenable", PeriodicInformEnable);
+    enable = atoi (PeriodicInformEnable);
+
+    cwmp_conf_get("cwmp:PeriodicInformInterval", PeriodicInformInterval);
+    // tcapi_get("cwmp", "cwmp:periodicinforminterval", PeriodicInformInterval);
+    interval_number = atoi (PeriodicInformInterval);
+
+    if (1 == enable)
+    {
+        if (0 == interval_number)
+        {
+            periodicinforminterval_tick.it_value.tv_sec = 30;
+            periodicinforminterval_tick.it_value.tv_usec = 0;
+            periodicinforminterval_tick.it_interval.tv_sec =30;
+            periodicinforminterval_tick.it_interval.tv_usec = 0;
+            ret = setitimer(ITIMER_REAL, &periodicinforminterval_tick, NULL);
+            if (ret != 0)
+            {
+                return;
+            }
+
+        }
+        else
+        {
+            periodicinforminterval_tick.it_value.tv_sec = interval_number;
+            periodicinforminterval_tick.it_value.tv_usec = 0;
+            periodicinforminterval_tick.it_interval.tv_sec =interval_number;
+            periodicinforminterval_tick.it_interval.tv_usec = 0;
+            ret = setitimer(ITIMER_REAL, &periodicinforminterval_tick, NULL);
+            if (ret != 0)
+            {
+                return;
+            }
+        }
+    }
+}
 
 int main(int argc, char **argv)
 {
@@ -137,6 +194,9 @@ int main(int argc, char **argv)
 #endif
 
     cwmp_model_load(cwmp, "/etc/device.xml");
+    cwmp_global = cwmp;
+    signal (SIGALRM, send_information);
+    cwmp_periodicinforminterval(cwmp);
     cwmp_process_start_master(cwmp);
 
     return 0;
