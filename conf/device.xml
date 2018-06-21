@@ -36,6 +36,7 @@
 				<param name="STUNMaximumKeepAlivePeriod" rw="1" type="s" get_func="" set_func=""/>
 				<param name="STUNMinimumKeepAlivePeriod" rw="1" type="s" get_func="" set_func=""/>
 				<param name="NATDetected" type="s" get_func="" set_func=""/>
+				<param name="mac" type="s" get_func="cpe_get_igd_ms_mac" set_func=""/>
 			</object>
 			<object name="WANDevice" rw="1" refresh_func="cpe_refresh_igd_wandevice">
 				<object name="{i}">

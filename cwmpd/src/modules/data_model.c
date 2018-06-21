@@ -17,6 +17,7 @@ model_func_t ModelFunction[] =
     {"cpe_get_igd_di_softwareversion", cpe_get_igd_di_softwareversion},
     {"cpe_get_igd_di_provisioningcode", cpe_get_igd_di_provisioningcode},
 
+    {"cpe_get_igd_ms_mac", cpe_get_igd_ms_mac},
     {"cpe_get_igd_ms_url", cpe_get_igd_ms_url},
     {"cpe_set_igd_ms_url", cpe_set_igd_ms_url},
     {"cpe_get_igd_ms_username", cpe_get_igd_ms_username},

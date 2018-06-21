@@ -1,3 +1,9 @@
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <netinet/if_ether.h>
+#include <net/if.h>
+#include <linux/sockios.h>
+
 int cpe_get_localip(const char * eth_name, char *hostip)
 {
     register int fd,intrface,retn=0;
@@ -55,6 +61,34 @@ int cpe_get_localip(const char * eth_name, char *hostip)
     strcpy(hostip, local_ip_addr);
 
     return CWMP_OK;
+}
+
+//InternetGatewayDevice.ManagementServer.mac
+int cpe_get_igd_ms_mac(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{    
+	// *value = cwmp_conf_pool_get(pool, "cwmp:acs_username");
+    int i = 0;
+    char macstr[18] = {0};
+    unsigned char macaddr[ETH_ALEN]={0};
+    struct ifreq req;
+ 
+    int s=socket(AF_INET,SOCK_DGRAM,0);
+    if (s <= 0)
+        return FAULT_CODE_9002;
+    strcpy(req.ifr_name,"eth0.4001");
+    req.ifr_hwaddr.sa_family=ARPHRD_ETHER;
+    int err=ioctl(s,SIOCGIFHWADDR,&req);
+    close(s);
+    if(err != -1) {
+        memcpy(macaddr,req.ifr_hwaddr.sa_data,ETH_ALEN);
+        for (; i < ETH_ALEN; i++) {
+            sprintf(macstr + 3*i, "%02x:",macaddr[i]);
+        }
+        macstr[sizeof(macstr) - 1] = '\0';
+        *value = PSTRDUP(macstr);
+        return FAULT_CODE_OK;
+    }
+    return FAULT_CODE_9002;
 }
 
 //InternetGatewayDevice.ManagementServer.Username
@@ -133,12 +167,8 @@ int cpe_get_igd_ms_connectionrequesturl(cwmp_t * cwmp, const char * name, char *
 {
     char buf[256]={0};
     char local_ip[32]={0};
-    char ifname[32] = {0};
-    //if get wan3 interface failed, just return error
-    if (get_wan3_interface(ifname))
-        return FAULT_CODE_9002;
-
-    cpe_get_localip(ifname, local_ip);
+ 
+    cpe_get_localip("eth0.4001", local_ip);
     int port = cwmp_conf_get_int("cwmpd:httpd_port");
     snprintf(buf, 256, "http://%s:%d", local_ip, port);
     *value = PSTRDUP(buf);
