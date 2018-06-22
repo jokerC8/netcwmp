@@ -1,3 +1,5 @@
+#include "libtcapi.h"
+
 int  cpe_refresh_igd_presharedKey(cwmp_t * cwmp, parameter_node_t * param_node, callback_register_func_t callback_reg)
 {
     FUNCTION_TRACE();
@@ -29,10 +31,29 @@ int  cpe_refresh_igd_presharedKey(cwmp_t * cwmp, parameter_node_t * param_node, 
 
 //InternetGatewayDevice.LANDevice.WLANConfiguration.PreSharedKey.PreSharedKey
 int cpe_get_igd_PreSharedKey_PreSharedKey(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
-{    
+{   
+    char buf[128] = {0};
+    if (get_config_value("uci get wireless.@wifi-iface[0].key", buf, sizeof(buf))) {
+        return FAULT_CODE_9007;
+    }
+    *value = PSTRDUP(buf);
     return FAULT_CODE_OK;
 }
 int cpe_set_igd_PreSharedKey_PreSharedKey(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
+    int i = 0;
+    char cmdline[64] = {0};
+    const char *cmd= "wireless.@wifi-iface[0].key=";
+    
+    for (; i < strlen(value); i++) {
+        if (isascii(value[i]))
+            continue;
+        else
+            return FAULT_CODE_9007;
+    }
+    snprintf(cmdline, sizeof(cmdline) - 1, "%s%s",cmd,value);
+    cmdline[strlen(cmdline)] = '\0';
+    system(cmdline);
+    system("uci commit wireless");
 	return FAULT_CODE_OK;
 }

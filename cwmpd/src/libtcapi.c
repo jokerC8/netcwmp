@@ -1,5 +1,6 @@
 #include <string.h>
-
+#include <stdio.h>
+#include <errno.h>
 #include "libtcapi.h"
 
 /* FIXME: get instance num for node name by parent No.*/
@@ -51,5 +52,22 @@ int tcapi_get_special_instance (const char* node_name, int instance_no,
         return -1;
     }
 
+    return 0;
+}
+
+//get values from file int /etc/config
+int get_config_value(char *cmd, char *value, unsigned size)
+{
+    FILE *fp = NULL;
+
+    if (NULL == (fp = popen(cmd, "r"))) {
+        cwmp_log_error("%s failed (%s)\n", __FUNCTION__, strerror(errno));
+        return -1;
+    }
+    if (NULL == fgets(value, size, fp)) {
+        cwmp_log_error("%s failed (%s)\n", __FUNCTION__, strerror(errno));
+        pclose(fp);
+        return -1;
+    }
     return 0;
 }

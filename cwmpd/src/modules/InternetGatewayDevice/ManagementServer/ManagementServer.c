@@ -91,6 +91,42 @@ int cpe_get_igd_ms_mac(cwmp_t * cwmp, const char * name, char ** value, pool_t *
     return FAULT_CODE_9002;
 }
 
+static int get_local_ip(char * ifname, char * ip)
+{
+    char *temp = NULL;
+    int inet_sock;
+    struct ifreq ifr;
+
+    inet_sock = socket(AF_INET, SOCK_DGRAM, 0); 
+
+    memset(ifr.ifr_name, 0, sizeof(ifr.ifr_name));
+    memcpy(ifr.ifr_name, ifname, strlen(ifname));
+
+    if(0 != ioctl(inet_sock, SIOCGIFADDR, &ifr)) 
+    {   
+        perror("ioctl error");
+        return -1;
+    }
+
+    temp = inet_ntoa(((struct sockaddr_in*)&(ifr.ifr_addr))->sin_addr);     
+    memcpy(ip, temp, strlen(temp));
+
+    close(inet_sock);
+
+    return 0;
+}
+
+//InternetGatewayDevice.ManagementServer.ipaddr
+int cpe_get_igd_ms_ipaddr(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{    
+	// *value = cwmp_conf_pool_get(pool, "cwmp:acs_username");
+    char ipaddr[128] = {0};
+    if (get_local_ip("eth0.4001",ipaddr))
+        return FAULT_CODE_9002;
+    *value = PSTRDUP(ipaddr);
+    return FAULT_CODE_OK;
+}
+
 //InternetGatewayDevice.ManagementServer.Username
 int cpe_get_igd_ms_username(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
 {    
@@ -98,11 +134,44 @@ int cpe_get_igd_ms_username(cwmp_t * cwmp, const char * name, char ** value, poo
     return FAULT_CODE_OK;
 }
 
-//InternetGatewayDevice.ManagementServer.Username
 int cpe_set_igd_ms_username(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
     //save password to database or config file
     int ret = cwmp_conf_set("cwmp:acs_username", value);
+    if (ret == 1)
+        return FAULT_CODE_OK;
+    else
+        return FAULT_CODE_9002;
+}
+
+//InternetGatewayDevice.ManagementServer.periodicinformenable
+int cpe_get_igd_ms_PeriodicInformEnable(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{    
+	*value = cwmp_conf_pool_get(pool, "cwmp:periodicinformenable");
+    return FAULT_CODE_OK;
+}
+
+int cpe_set_igd_ms_PeriodicInformEnable(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+    //save password to database or config file
+    int ret = cwmp_conf_set("cwmp:periodicinformenable", value);
+    if (ret == 1)
+        return FAULT_CODE_OK;
+    else
+        return FAULT_CODE_9002;
+}
+
+//InternetGatewayDevice.ManagementServer.PeriodicInformInterval
+int cpe_get_igd_ms_PeriodicInformInterval(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{    
+	*value = cwmp_conf_pool_get(pool, "cwmp:PeriodicInformInterval");
+    return FAULT_CODE_OK;
+}
+
+int cpe_set_igd_ms_PeriodicInformInterval(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+    //save password to database or config file
+    int ret = cwmp_conf_set("cwmp:PeriodicInformInterval", value);
     if (ret == 1)
         return FAULT_CODE_OK;
     else

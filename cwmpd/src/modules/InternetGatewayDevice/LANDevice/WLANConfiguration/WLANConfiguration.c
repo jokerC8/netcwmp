@@ -1,3 +1,5 @@
+#include "libtcapi.h"
+
 int  cpe_refresh_igd_wlanconfiguration(cwmp_t * cwmp, parameter_node_t * param_node, callback_register_func_t callback_reg)
 {
     FUNCTION_TRACE();
@@ -32,14 +34,16 @@ int  cpe_refresh_igd_wlanconfiguration(cwmp_t * cwmp, parameter_node_t * param_n
 
 //InternetGatewayDevice.LANDevice.WLANConfiguration.Enable
 int cpe_get_igd_WLANConfiguration_Enable(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
-{    
+{   
+    //always enable
+    *value = PSTRDUP("1");
     return FAULT_CODE_OK;
 }
 int cpe_set_igd_WLANConfiguration_Enable(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
+    //always enable
 	return FAULT_CODE_OK;
 }
-
 
 //InternetGatewayDevice.LANDevice.WLANConfiguration.BeaconType
 int cpe_get_igd_WLANConfiguration_BeaconType(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
@@ -51,22 +55,22 @@ int cpe_set_igd_WLANConfiguration_BeaconType(cwmp_t * cwmp, const char * name, c
 	return FAULT_CODE_OK;
 }
 
-//InternetGatewayDevice.LANDevice.WLANConfiguration.BasicEncryptionModes
-int cpe_get_igd_WLANConfiguration_BasicEncryptionModes(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+//InternetGatewayDevice.LANDevice.WLANConfiguration.WPAEncryptionModes
+int cpe_get_igd_WLANConfiguration_WPAEncryptionModes(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
 {    
     return FAULT_CODE_OK;
 }
-int cpe_set_igd_WLANConfiguration_BasicEncryptionModes(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+int cpe_set_igd_WLANConfiguration_WPAEncryptionModes(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
 	return FAULT_CODE_OK;
 }
 
-//InternetGatewayDevice.LANDevice.WLANConfiguration.BasicAuthenticationMode
-int cpe_get_igd_WLANConfiguration_BasicAuthenticationMode(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+//InternetGatewayDevice.LANDevice.WLANConfiguration.WPAAuthenticationMode
+int cpe_get_igd_WLANConfiguration_WPAAuthenticationMode(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
 {    
     return FAULT_CODE_OK;
 }
-int cpe_set_igd_WLANConfiguration_BasicAuthenticationMode(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+int cpe_set_igd_WLANConfiguration_WPAAuthenticationMode(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
 	return FAULT_CODE_OK;
 }
@@ -74,9 +78,28 @@ int cpe_set_igd_WLANConfiguration_BasicAuthenticationMode(cwmp_t * cwmp, const c
 //InternetGatewayDevice.LANDevice.WLANConfiguration.SSID
 int cpe_get_igd_WLANConfiguration_SSID(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
 {   
+    char buf[128] = {0};
+    if (get_config_value("uci get wireless.@wifi-iface[0].ssid", buf, sizeof(buf))) {
+        return FAULT_CODE_9007;
+    }
+    *value = PSTRDUP(buf);
     return FAULT_CODE_OK;
 }
 int cpe_set_igd_WLANConfiguration_SSID(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
+    int i = 0;
+    char cmdline[64] = {0};
+    const char *cmd= "uci set wireless.@wifi-iface[0].ssid=";
+    
+    for (; i < strlen(value); i++) {
+        if (isascii(value[i]))
+            continue;
+        else
+            return FAULT_CODE_9007;
+    }
+    snprintf(cmdline, sizeof(cmdline) - 1, "%s%s",cmd,value);
+    cmdline[strlen(cmdline)] = '\0';
+    system(cmdline);
+    system("uci commit wireless");
 	return FAULT_CODE_OK;
 }
