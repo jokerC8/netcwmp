@@ -1,4 +1,3 @@
-
 int  cpe_refresh_igd_wandevice(cwmp_t * cwmp, parameter_node_t * param_node, callback_register_func_t callback_reg)
 {
     FUNCTION_TRACE();

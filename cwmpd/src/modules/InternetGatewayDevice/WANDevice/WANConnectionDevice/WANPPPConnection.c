@@ -30,27 +30,25 @@ int  cpe_refresh_igd_wanpppconnection(cwmp_t * cwmp, parameter_node_t * param_no
             switch(wan_conn_dev_index)
             {
                 case 1: 
-                    cwmp_model_copy_parameter(param_node, &pppconn_param, 1);
+                    // cwmp_model_copy_parameter(param_node, &pppconn_param, 1);
                     break;
 
                 case 2:
                     cwmp_model_copy_parameter(param_node, &pppconn_param, 1); 
-                    cwmp_model_copy_parameter(param_node, &pppconn_param, 2);
+                    // cwmp_model_copy_parameter(param_node, &pppconn_param, 2);
                     break;
-
+				case 3:
+					cwmp_model_copy_parameter(param_node, &pppconn_param, 1);
+					break;
             }
-            
-            
         }
         else
         if(wan_index == 2)
         {
             //don't support
         }
-
         cwmp_model_refresh_object(cwmp, param_node, 0, callback_reg); 
     }
-
     return FAULT_CODE_OK;
 }
 
@@ -104,13 +102,28 @@ int cpe_get_igd_WANPPPConnection_Username(cwmp_t * cwmp, const char * name, char
 {
 	FUNCTION_TRACE();
 	char *param_name;
-	param_name = strrchr(name, '.');
-	if (NULL == param_name) {
-		cwmp_log_error("no such parameter\n");
-		return FAULT_CODE_9005;
+	int wan_device_conn_num, wan_ppp_conn_num;
+	tcapi_get_special_instance(name, 3, &wan_device_conn_num);
+	tcapi_get_special_instance(name, 1, &wan_ppp_conn_num);
+	switch (wan_device_conn_num) {
+		case 1:
+			break;
+		case 2:
+			if (wan_ppp_conn_num == 1) {
+				param_name = strrchr(name, '.');
+				if (NULL == param_name) {
+					cwmp_log_error("no such parameter\n");
+					return FAULT_CODE_9005;
+				}
+				param_name++;
+				*value = get_pppoe_username_password(param_name);
+			}
+			break;
+		case 3:
+			break;
+		default:
+			break;
 	}
-	param_name++;
-	*value = get_pppoe_username_password(param_name);
 	return FAULT_CODE_OK;
 }
 
@@ -151,13 +164,28 @@ int cpe_get_igd_WANPPPConnection_Password(cwmp_t * cwmp, const char * name, char
 {
 	FUNCTION_TRACE();
 	char *param_name;
-	param_name = strrchr(name, '.');
-	if (NULL == param_name) {
-		cwmp_log_error("no such parameter\n");
-		return FAULT_CODE_9005;
+	int wan_device_conn_num, wan_ppp_conn_num;
+	tcapi_get_special_instance(name, 3, &wan_device_conn_num);
+	tcapi_get_special_instance(name, 1, &wan_ppp_conn_num);
+	switch (wan_device_conn_num) {
+		case 1:
+			break;
+		case 2:
+			if (wan_ppp_conn_num == 1) {
+				param_name = strrchr(name, '.');
+				if (NULL == param_name) {
+					cwmp_log_error("no such parameter\n");
+					return FAULT_CODE_9005;
+				}
+				param_name++;
+				*value = get_pppoe_username_password(param_name);
+			}
+			break;
+		case 3:
+			break;
+		default:
+			break;
 	}
-	param_name++;
-	*value = get_pppoe_username_password(param_name);
 	return FAULT_CODE_OK;
 }
 
@@ -197,11 +225,132 @@ int cpe_set_igd_WANPPPConnection_Password(cwmp_t * cwmp, const char * name, cons
 int cpe_get_igd_WANPPPConnection_Enable(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
 {
 	FUNCTION_TRACE();
+	*value = PSTRDUP("1");
 	return FAULT_CODE_OK;
 }
 
 int cpe_set_igd_WANPPPConnection_Enable(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
 	FUNCTION_TRACE();
+	return FAULT_CODE_OK;
+}
+
+int cpe_get_igd_WANPPPConnection_DNSServers(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+	*value = PSTRDUP("0.0.0.0");
+	return FAULT_CODE_OK;
+}
+
+int cpe_set_igd_WANPPPConnection_DNSServers(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	FUNCTION_TRACE();
+	return FAULT_CODE_OK;
+}
+
+int cpe_get_igd_WANPPPConnection_MACAddress(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+	int wan_device_conn_num, wan_ppp_conn_num;
+	tcapi_get_special_instance(name, 3, &wan_device_conn_num);
+	tcapi_get_special_instance(name, 1, &wan_ppp_conn_num);
+
+	switch (wan_device_conn_num) {
+		case 1:
+			break;
+		case 2:
+			if (wan_ppp_conn_num == 1) {
+				*value = get_mac_addr("eth0.1000");
+			}
+			break;
+		case 3:
+			if (wan_ppp_conn_num == 1) {
+				*value = get_mac_addr("eth0.2000");
+			}
+			break;
+		default:
+			break;
+	}
+	return FAULT_CODE_OK;
+}
+
+int cpe_set_igd_WANPPPConnection_MACAddress(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	FUNCTION_TRACE();
+	return FAULT_CODE_OK;
+}
+
+int cpe_get_igd_WANPPPConnection_ConnectionTrigger(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+	*value = PSTRDUP("OnDemand");
+	return FAULT_CODE_OK;
+}
+
+int cpe_set_igd_WANPPPConnection_ConnectionTrigger(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	FUNCTION_TRACE();
+	return FAULT_CODE_OK;
+}
+
+int cpe_get_igd_WANPPPConnection_ConnectionType(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+	int wan_device_conn_num, wan_ppp_conn_num;
+	tcapi_get_special_instance(name, 3, &wan_device_conn_num);
+	tcapi_get_special_instance(name, 1, &wan_ppp_conn_num);
+
+	switch (wan_device_conn_num) {
+		case 1:
+			break;
+		case 2:
+			if (wan_ppp_conn_num == 1) {
+				*value = PSTRDUP("IP_Routed");
+			}
+			break;
+		case 3:
+			if (wan_ppp_conn_num == 1) {
+				*value = PSTRDUP("PPPoE_Bridged");
+			}
+			break;
+		default:
+			break;
+	}
+	return FAULT_CODE_OK;
+}
+
+int cpe_set_igd_WANPPPConnection_ConnectionType(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
+{
+	FUNCTION_TRACE();
+	return FAULT_CODE_OK;
+}
+
+int cpe_get_igd_WANPPPConnection_DefaultGateway(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+	*value = PSTRDUP("0.0.0.0");
+	return FAULT_CODE_OK;
+}
+
+int cpe_get_igd_WANPPPConnection_ExternalIPAddress(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+	// int wan_device_conn_num, wan_ppp_conn_num;
+	// tcapi_get_special_instance(name, 3, &wan_device_conn_num);
+	// tcapi_get_special_instance(name, 1, &wan_ppp_conn_num);
+
+	// switch (wan_device_conn_num) {
+	// 	case 1: //vlan for tr069
+	// 		break;
+	// 	case 2: //vlan for pppoe
+	// 		if (wan_ppp_conn_num == 1) {
+	// 			*value = get_local_ipaddr("pppoe-wan");
+	// 		}
+	// 		break;
+	// 	case 3: //vlan for internal network
+	// 		break;
+	// 	default:
+	// 		break;
+	// }
 	return FAULT_CODE_OK;
 }

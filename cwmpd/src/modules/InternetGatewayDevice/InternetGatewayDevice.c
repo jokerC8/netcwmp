@@ -9,7 +9,7 @@
 #include "WANDevice/WANConnectionDevice/WANConnectionDevice.c"
 #include "WANDevice/WANConnectionDevice/WANIPConnection.c"
 #include "WANDevice/WANConnectionDevice/WANPPPConnection.c"
-#include "WANDevice/WANConnectionDevice/WANIPConnection/X_NGB_WANEponLinkConfig.c"
+#include "WANDevice/WANConnectionDevice/X_NGB_WANEponLinkConfig.c"
 
 
 // char* cpe_get_igd_device_summary(void * arg, void * pool)

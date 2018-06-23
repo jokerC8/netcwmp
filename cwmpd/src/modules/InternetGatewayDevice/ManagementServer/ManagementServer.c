@@ -11,7 +11,6 @@ int cpe_get_localip(const char * eth_name, char *hostip)
     struct ifconf ifc;
     char domain_host[100] = {0};
     char local_ip_addr[20] = {0};
-    char local_mac[20] = {0};
     //Get Domain Name --------------------------------------------------
     strcpy(local_ip_addr, "127.0.0.1");
     if (!hostip)
@@ -98,21 +97,21 @@ static int get_local_ip(char * ifname, char * ip)
     struct ifreq ifr;
 
     inet_sock = socket(AF_INET, SOCK_DGRAM, 0); 
-
+    if (inet_sock <=0 ) {
+        return -1;
+    }
     memset(ifr.ifr_name, 0, sizeof(ifr.ifr_name));
     memcpy(ifr.ifr_name, ifname, strlen(ifname));
 
     if(0 != ioctl(inet_sock, SIOCGIFADDR, &ifr)) 
     {   
         perror("ioctl error");
+        close(inet_sock);
         return -1;
     }
-
     temp = inet_ntoa(((struct sockaddr_in*)&(ifr.ifr_addr))->sin_addr);     
     memcpy(ip, temp, strlen(temp));
-
     close(inet_sock);
-
     return 0;
 }
 
@@ -211,24 +210,6 @@ int cpe_set_igd_ms_url(cwmp_t * cwmp, const char * name, const char * value, int
         return FAULT_CODE_OK;
     else
         return FAULT_CODE_9002;
-}
-
-//get wan3 interface name
-static int get_wan3_interface(char *ifname)
-{
-	FILE *fp = NULL;
-	char *cmd = "uci get network.wan3.ifname";
-	if (NULL == (fp == popen(cmd, "r"))) {
-		cwmp_log_error("%s failed (%s)\n", __FUNCTION__,strerror(errno));
-		return -1;
-	}
-	if (NULL == (fgets(ifname, 32, fp))) {
-		cwmp_log_error("%s failed (%s)\n", __FUNCTION__,strerror(errno));
-		pclose(fp);
-		return -1;
-	}
-	pclose(fp);
-	return 0;
 }
 
 //InternetGatewayDevice.ManagementServer.ConnectionRequestURL

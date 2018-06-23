@@ -44,50 +44,49 @@
 					<param name="WANConnectionNumberOfEntries" type="uint" get_func="cpe_get_igd_WANConnectionDevice_WANConnectionNumberOfEntries"/>
 					<object name="WANConnectionDevice" rw="1" refresh_func="cpe_refresh_igd_wanconnectiondevice">
 						<object name="{i}">
-							<param name="WANIPConnectionNumberOfEntries" rw="1" type="uint" get_func=""/>
+							<param name="WANIPConnectionNumberOfEntries" rw="1" type="uint" get_func="cpe_get_igd_WANConnectionDevice_WANIPConnectionNumberOfEntries"/>
 							<param name="WANPPPConnectionNumberOfEntries" rw="1" type="uint" get_func="cpe_get_igd_WANConnectionDevice_WANPPPConnectionNumberOfEntries"/>
+							<object name="X_NGB_WANEponLinkConfig">
+								<param name="VLANIDMark" rw="1" type="uint" get_func="cpe_get_X_NGB_WANEponLinkConfig_VLANIDMark" set_func="cpe_set_X_NGB_WANEponLinkConfig_VLANIDMark"/>
+								<param name="X_NGB_802_1p" rw="1" type="uint" get_func="cpe_get_X_NGB_WANEponLinkConfig_X_NGB_802_1p" set_func="cpe_set_X_NGB_WANEponLinkConfig_X_NGB_802_1p"/>
+							</object>
 							<object name="WANIPConnection" rw="1" refresh_func="cpe_refresh_igd_wanipconnection">
 								<object name="{i}">
-									<param name="Enable" rw="1" type="s" get_func="" set_func=""/>
+									<param name="Enable" rw="1" type="bool" get_func="cpe_get_igd_WANIPConnection_Enable" set_func="cpe_set_igd_WANIPConnection_Enable"/>
 									<param name="AddressingType" noti_rw="1" rw="1" type="s" get_func="cpe_get_igd_WANIPConnection_AddressingType" set_func="cpe_set_igd_WANIPConnection_AddressingType" />
-									<param name="ExternalIPAddress" noti_rw="1" rw="1" get_func="" set_func=""/>
-									<param name="SubnetMask" noti_rw="1" rw="1" get_func="" set_func=""/>
-									<param name="DefaultGateway" rw="1" get_func="" set_func=""/>
-									<param name="DNSServers" rw="1" get_func="" set_func=""/>
-									<param name="MACAddress" rw="1" get_func="" set_func=""/>
-
+									<param name="ExternalIPAddress" noti_rw="1" rw="1" get_func="cpe_get_igd_WANIPConnection_ExternalIPAddress" set_func="cpe_set_igd_WANIPConnection_ExternalIPAddress"/>
+									<param name="SubnetMask" noti_rw="1" rw="1" get_func="cpe_get_igd_WANIPConnection_SubnetMask" set_func="cpe_set_igd_WANIPConnection_SubnetMask"/>
+									<param name="DefaultGateway" rw="1" get_func="cpe_get_igd_WANIPConnection_DefaultGateway" set_func="cpe_set_igd_WANIPConnection_DefaultGateway"/>
+									<param name="DNSServers" rw="1" get_func="cpe_get_igd_WANIPConnection_DNSServers" set_func="cpe_set_igd_WANIPConnection_DNSServers"/>
+									<param name="MACAddress" rw="1" get_func="cpe_get_igd_WANIPConnection_MACAddress" set_func="cpe_set_igd_WANIPConnection_MACAddress"/>
 									<param name="X_NGB_ServiceList" rw="1" type="s" get_func="cpe_get_igd_WANIPConnection_X_NGB_ServiceList" set_func="cpe_set_igd_WANIPConnection_X_NGB_ServiceList" />
 									<param name="MTU" rw="1" type="uint" get_func="cpe_get_igd_WANIPConnection_MTU" set_func="cpe_get_igd_WANIPConnection_MTU" />
 									<param name="PossibleConnectionTypes" rw="1" type="s64" get_func="cpe_get_igd_WANIPConnection_PossibleConnectionTypes" set_func="cpe_set_igd_WANIPConnection_PossibleConnectionTypes" />
-									<object name="X_NGB_WANEponLinkConfig">
-										<param name="VLANIDMark" rw="1" type="uint" get_func="cpe_get_X_NGB_WANEponLinkConfig_VLANIDMark" set_func="cpe_set_X_NGB_WANEponLinkConfig_VLANIDMark"/>
-										<param name="X_NGB_802_1p" rw="1" type="uint" get_func="cpe_get_X_NGB_WANEponLinkConfig_X_NGB_802_1p" set_func="cpe_set_X_NGB_WANEponLinkConfig_X_NGB_802_1p"/>
-									</object>
-
-									<object name="Stats">
+									<!-- <object name="Stats">
 										<param name="EthernetBytesSent" get_func=""/>
 										<param name="EthernetBytesReceived" get_func=""/>
 										<param name="EthernetPacketsSent" get_func=""/>
 										<param name="EthernetPacketsReceived" get_func=""/>
-									</object>
+									</object> -->
 								</object>
 							</object>
 							<object name="WANPPPConnection" rw="1" refresh_func="cpe_refresh_igd_wanpppconnection">
 								<object name="{i}">
 									<param name="Enable" rw="1" type="s" get_func="cpe_get_igd_WANPPPConnection_Enable" set_func="cpe_set_igd_WANPPPConnection_Enable"/>
-									<param name="DefaultGateway" get_func=""/>
+									<param name="ConnectionType" rw="1" type="s" get_func="cpe_get_igd_WANPPPConnection_ConnectionType" set_func="cpe_set_igd_WANPPPConnection_ConnectionType"/>
+									<param name="DefaultGateway" get_func="cpe_get_igd_WANPPPConnection_DefaultGateway"/>
 									<param name="Username" noti_rw="1" rw="1" get_func="cpe_get_igd_WANPPPConnection_Username" set_func="cpe_set_igd_WANPPPConnection_Username"/>
 									<param name="Password" noti_rw="1" rw="1" get_func="cpe_get_igd_WANPPPConnection_Password" set_func="cpe_set_igd_WANPPPConnection_Password"/>
-									<param name="ExternalIPAddress" get_func=""/>
-									<param name="DNSServers" rw="1" get_func="" set_func=""/>
-									<param name="MACAddress" rw="1" type="s" get_func="" set_func=""/>
-									<param name="ConnectionTrigger" rw="1" get_func="" set_func=""/>
-									<object name="Stats">
+									<param name="ExternalIPAddress" get_func="cpe_get_igd_WANPPPConnection_ExternalIPAddress"/>
+									<param name="DNSServers" rw="1" get_func="cpe_get_igd_WANPPPConnection_DNSServers" set_func="cpe_set_igd_WANPPPConnection_DNSServers"/>
+									<param name="MACAddress" rw="1" type="s" get_func="cpe_get_igd_WANPPPConnection_MACAddress" set_func="cpe_set_igd_WANPPPConnection_MACAddress"/>
+									<param name="ConnectionTrigger" rw="1" get_func="cpe_get_igd_WANPPPConnection_ConnectionTrigger" set_func="cpe_set_igd_WANPPPConnection_ConnectionTrigger"/>
+									<!-- <object name="Stats">
 										<param name="EthernetBytesSent" get_func=""/>
 										<param name="EthernetBytesReceived" get_func=""/>
 										<param name="EthernetPacketsSent" get_func=""/>
 										<param name="EthernetPacketsReceived" get_func=""/>
-									</object>
+									</object> -->
 								</object>
 							</object>
 						</object>
@@ -139,7 +138,7 @@
 					</object>
 				</object>
 			</object>
-			<object name="IPPingDiagnostics">
+			<!-- <object name="IPPingDiagnostics">
 				<param name="DiagnosticsState" rw="1" get_func="" set_func=""/>
 				<param name="Interface" rw="1" get_func="" set_func=""/>
 				<param name="Host" rw="1" get_func="" set_func=""/>
@@ -152,8 +151,8 @@
 				<param name="AverageResponseTime" get_func=""/>
 				<param name="MinimumResponseTime" get_func=""/>
 				<param name="MaximumResponseTime" get_func=""/>
-			</object>
-			<object name="TraceRouteDiagnostics">
+			</object> -->
+			<!-- <object name="TraceRouteDiagnostics">
 				<param name="DiagnosticsState" rw="1" get_func="" set_func=""/>
 				<param name="Interface" rw="1" get_func="" set_func=""/>
 				<param name="Host" rw="1" get_func="" set_func=""/>
@@ -172,7 +171,7 @@
 						<param name="HopRTTimes" get_func=""/>
 					</object>
 				</object>
-			</object>
+			</object> -->
 		</object>
 	</model>
 	<inform>
