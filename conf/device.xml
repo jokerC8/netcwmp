@@ -14,6 +14,16 @@
 				<param name="ManufacturerOUI" get_func="cpe_get_igd_di_manufactureroui"/>
 				<param name="ProductClass" get_func="cpe_get_igd_di_productclass"/>
 				<param name="SerialNumber" get_func="cpe_get_igd_di_serialnumber"/>
+				<object name="X_NGB_CBAT">
+					<object name="CNU" rw="1" refresh_func="cpe_refresh_igd_cnu">
+						<object name="{i}">
+							<param name="MACAddress" get_func="cpe_get_igd_di_CNU_MACAddress"/>
+							<param name="deviceType" get_func="cpe_get_igd_di_CNU_deviceType"/>
+							<param name="ConnectionStatus" get_func="cpe_get_igd_di_CNU_ConnectionStatus"/>
+							<param name="firewareVersion" get_func="cpe_get_igd_di_CNU_firewareVersion"/>
+						</object>
+					</object>
+				</object>
 			</object>		
 			<object name="ManagementServer">
 				<param name="ConnectionRequestURL" get_func="cpe_get_igd_ms_connectionrequesturl"/>
@@ -72,6 +82,8 @@
 							</object>
 							<object name="WANPPPConnection" rw="1" refresh_func="cpe_refresh_igd_wanpppconnection">
 								<object name="{i}">
+									<param name="X_NGB_LanInterface" type="s" get_func="cpe_get_igd_WANPPPConnection_X_NGB_LanInterface" set_func=""/>
+									<param name="X_NGB_ServiceList" type="s" get_func="cpe_get_igd_WANPPPConnection_X_NGB_ServiceList" set_func=""/>
 									<param name="Enable" rw="1" type="s" get_func="cpe_get_igd_WANPPPConnection_Enable" set_func="cpe_set_igd_WANPPPConnection_Enable"/>
 									<param name="ConnectionType" rw="1" type="s" get_func="cpe_get_igd_WANPPPConnection_ConnectionType" set_func="cpe_set_igd_WANPPPConnection_ConnectionType"/>
 									<param name="DefaultGateway" get_func="cpe_get_igd_WANPPPConnection_DefaultGateway"/>
@@ -88,6 +100,11 @@
 										<param name="EthernetPacketsReceived" get_func=""/>
 									</object> -->
 								</object>
+							</object>
+							<object name="WANEthernetLinkConfig">
+								<param name="X_NGB_VLANEnabled" type="s" get_func="cpe_get_igd_WANEthernetLinkConfig_X_NGB_VLANEnabled"/>
+								<param name="X_NGB_VLAN" type="uint" get_func="cpe_get_igd_WANEthernetLinkConfig_X_NGB_VLAN"/>
+								<param name="X_NGB_802_1p" type="uint" get_func="cpe_get_igd_WANEthernetLinkConfig_X_NGB_802_1p"/>
 							</object>
 						</object>
 					</object>

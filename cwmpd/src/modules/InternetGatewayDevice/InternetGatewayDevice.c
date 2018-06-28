@@ -1,4 +1,5 @@
 #include "DeviceInfo/DeviceInfo.c"
+#include "DeviceInfo/CNU/CNU.c"
 #include "ManagementServer/ManagementServer.c"
 #include "WANDevice/WANDevice.c"
 #include "LANDevice/LANDevice.c"
@@ -10,6 +11,7 @@
 #include "WANDevice/WANConnectionDevice/WANIPConnection.c"
 #include "WANDevice/WANConnectionDevice/WANPPPConnection.c"
 #include "WANDevice/WANConnectionDevice/X_NGB_WANEponLinkConfig.c"
+#include "WANDevice/WANConnectionDevice/WANEthernetLinkConfig.c"
 
 
 // char* cpe_get_igd_device_summary(void * arg, void * pool)

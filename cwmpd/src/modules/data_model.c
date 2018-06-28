@@ -16,6 +16,10 @@ model_func_t ModelFunction[] =
     {"cpe_get_igd_di_hardwareversion", cpe_get_igd_di_hardwareversion},
     {"cpe_get_igd_di_softwareversion", cpe_get_igd_di_softwareversion},
     {"cpe_get_igd_di_provisioningcode", cpe_get_igd_di_provisioningcode},
+    {"cpe_get_igd_di_CNU_MACAddress", cpe_get_igd_di_CNU_MACAddress},
+    {"cpe_get_igd_di_CNU_deviceType", cpe_get_igd_di_CNU_deviceType},
+    {"cpe_get_igd_di_CNU_ConnectionStatus", cpe_get_igd_di_CNU_ConnectionStatus},
+    {"cpe_get_igd_di_CNU_firewareVersion", cpe_get_igd_di_CNU_firewareVersion},
 
     {"cpe_get_igd_ms_mac", cpe_get_igd_ms_mac},
     {"cpe_get_igd_ms_ipaddr", cpe_get_igd_ms_ipaddr},
@@ -70,6 +74,8 @@ model_func_t ModelFunction[] =
     {"cpe_get_igd_WANConnectionDevice_WANIPConnectionNumberOfEntries", cpe_get_igd_WANConnectionDevice_WANIPConnectionNumberOfEntries},
     {"cpe_get_igd_WANConnectionDevice_WANPPPConnectionNumberOfEntries", cpe_get_igd_WANConnectionDevice_WANPPPConnectionNumberOfEntries},
     
+    {"cpe_get_igd_WANPPPConnection_X_NGB_LanInterface", cpe_get_igd_WANPPPConnection_X_NGB_LanInterface},
+    {"cpe_get_igd_WANPPPConnection_X_NGB_ServiceList", cpe_get_igd_WANPPPConnection_X_NGB_ServiceList},
     {"cpe_get_igd_WANPPPConnection_Enable", cpe_get_igd_WANPPPConnection_Enable},
     {"cpe_set_igd_WANPPPConnection_Enable", cpe_set_igd_WANPPPConnection_Enable},
   	{"cpe_get_igd_WANPPPConnection_Username", cpe_get_igd_WANPPPConnection_Username},
@@ -87,6 +93,10 @@ model_func_t ModelFunction[] =
     {"cpe_set_igd_WANPPPConnection_ConnectionType", cpe_set_igd_WANPPPConnection_ConnectionType},
     {"cpe_get_igd_WANPPPConnection_DefaultGateway", cpe_get_igd_WANPPPConnection_DefaultGateway},
     {"cpe_get_igd_WANPPPConnection_ExternalIPAddress", cpe_get_igd_WANPPPConnection_ExternalIPAddress},
+
+    {"cpe_get_igd_WANEthernetLinkConfig_X_NGB_VLANEnabled", cpe_get_igd_WANEthernetLinkConfig_X_NGB_VLANEnabled},
+    {"cpe_get_igd_WANEthernetLinkConfig_X_NGB_VLAN", cpe_get_igd_WANEthernetLinkConfig_X_NGB_VLAN},
+    {"cpe_get_igd_WANEthernetLinkConfig_X_NGB_802_1p", cpe_get_igd_WANEthernetLinkConfig_X_NGB_802_1p},
 
     {"cpe_refresh_igd_landevice", cpe_refresh_igd_landevice},
     {"cpe_refresh_igd_lanethernetinterfaceconfig", cpe_refresh_igd_lanethernetinterfaceconfig},

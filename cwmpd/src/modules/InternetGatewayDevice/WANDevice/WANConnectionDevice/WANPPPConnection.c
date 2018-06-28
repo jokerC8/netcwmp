@@ -222,6 +222,54 @@ int cpe_set_igd_WANPPPConnection_Password(cwmp_t * cwmp, const char * name, cons
 	return FAULT_CODE_9005;
 }
 
+int cpe_get_igd_WANPPPConnection_X_NGB_LanInterface(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+	int wan_device_conn_num, wan_ppp_conn_num;
+	tcapi_get_special_instance(name, 3, &wan_device_conn_num);
+	tcapi_get_special_instance(name, 1, &wan_ppp_conn_num);
+
+	switch (wan_device_conn_num) {
+		case 1:
+			break;
+		case 2:
+			if (wan_ppp_conn_num == 1) {
+				*value = PSTRDUP("lan1 lan2 lan4");
+			}
+			break;
+		case 3:
+			if (wan_ppp_conn_num == 1) {
+				*value = PSTRDUP("lan3");
+			}
+			break;
+		default:
+			break;
+	}
+	return FAULT_CODE_OK;
+}
+
+int cpe_get_igd_WANPPPConnection_X_NGB_ServiceList(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
+{
+	FUNCTION_TRACE();
+	int wan_device_conn_num, wan_ppp_conn_num;
+	tcapi_get_special_instance(name, 3, &wan_device_conn_num);
+	tcapi_get_special_instance(name, 1, &wan_ppp_conn_num);
+
+	switch (wan_device_conn_num) {
+		case 1:
+			break;
+		case 2:
+			*value = PSTRDUP("INTERNET");
+			break;
+		case 3:
+			*value = PSTRDUP("OTHER");
+			break;
+		default:
+			break;
+	}
+	return FAULT_CODE_OK;
+}
+
 int cpe_get_igd_WANPPPConnection_Enable(cwmp_t * cwmp, const char * name, char ** value, pool_t * pool)
 {
 	FUNCTION_TRACE();
@@ -310,7 +358,7 @@ int cpe_get_igd_WANPPPConnection_ConnectionType(cwmp_t * cwmp, const char * name
 			break;
 		case 3:
 			if (wan_ppp_conn_num == 1) {
-				*value = PSTRDUP("PPPoE_Bridged");
+				*value = PSTRDUP("IP_Bridged");
 			}
 			break;
 		default:
