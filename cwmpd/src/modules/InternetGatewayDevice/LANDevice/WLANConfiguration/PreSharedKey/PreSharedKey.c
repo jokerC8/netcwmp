@@ -43,17 +43,32 @@ int cpe_set_igd_PreSharedKey_PreSharedKey(cwmp_t * cwmp, const char * name, cons
 {
     int i = 0;
     char cmdline[64] = {0};
-    const char *cmd= "wireless.@wifi-iface[0].key=";
-    
-    for (; i < strlen(value); i++) {
-        if (isascii(value[i]))
-            continue;
-        else
-            return FAULT_CODE_9007;
+    const char *cmd= "uci set wireless.@wifi-iface[0].key=";
+	int lan_device_conn_num, wlan_conf_conn_num,pre_sharekey_num;
+	tcapi_get_special_instance(name, 5, &lan_device_conn_num);
+	tcapi_get_special_instance(name, 3, &wlan_conf_conn_num);
+    tcapi_get_special_instance(name, 1, &pre_sharekey_num);
+
+    switch (lan_device_conn_num) {
+        case 1:
+            break;
+        case 3:
+            if (wlan_conf_conn_num == 1 && pre_sharekey_num == 1) {
+                for (; i < strlen(value); i++) {
+                    if (isascii(value[i]))
+                        continue;
+                    else
+                        return FAULT_CODE_9007;
+                }
+                snprintf(cmdline, sizeof(cmdline) - 1, "%s%s",cmd,value);
+                cmdline[strlen(cmdline)] = '\0';
+                system(cmdline);
+                system("uci commit wireless");
+                return FAULT_CODE_OK;
+            }
+            break;
+        default:
+            break;
     }
-    snprintf(cmdline, sizeof(cmdline) - 1, "%s%s",cmd,value);
-    cmdline[strlen(cmdline)] = '\0';
-    system(cmdline);
-    system("uci commit wireless");
-	return FAULT_CODE_OK;
+    return FAULT_CODE_9007;
 }

@@ -87,19 +87,33 @@ int cpe_get_igd_WLANConfiguration_SSID(cwmp_t * cwmp, const char * name, char **
 }
 int cpe_set_igd_WLANConfiguration_SSID(cwmp_t * cwmp, const char * name, const char * value, int length, callback_register_func_t callback_reg)
 {
+	FUNCTION_TRACE();
     int i = 0;
     char cmdline[64] = {0};
     const char *cmd= "uci set wireless.@wifi-iface[0].ssid=";
-    
-    for (; i < strlen(value); i++) {
-        if (isascii(value[i]))
-            continue;
-        else
-            return FAULT_CODE_9007;
+	int lan_device_conn_num, wlan_conf_conn_num;
+	tcapi_get_special_instance(name, 3, &lan_device_conn_num);
+	tcapi_get_special_instance(name, 1, &wlan_conf_conn_num);
+    switch (lan_device_conn_num) {
+        case 1:
+            break;
+        case 3:
+            if (wlan_conf_conn_num == 1) {
+                for (; i < strlen(value); i++) {
+                    if (isascii(value[i]))
+                        continue;
+                    else
+                        return FAULT_CODE_9007;
+                }
+                snprintf(cmdline, sizeof(cmdline) - 1, "%s%s",cmd,value);
+                cmdline[strlen(cmdline)] = '\0';
+                system(cmdline);
+                system("uci commit wireless");
+                return FAULT_CODE_OK;
+            }
+            break;
+        default:
+            break;
     }
-    snprintf(cmdline, sizeof(cmdline) - 1, "%s%s",cmd,value);
-    cmdline[strlen(cmdline)] = '\0';
-    system(cmdline);
-    system("uci commit wireless");
-	return FAULT_CODE_OK;
+    return FAULT_CODE_9007;
 }
